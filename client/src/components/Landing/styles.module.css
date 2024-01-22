@@ -1,0 +1,121 @@
+.landing{
+    padding:6vw;
+    position: relative;
+    min-height: 80vh;
+}
+.landing_house_div{
+    width:60vw;
+    height:80vh;
+    position: absolute;
+    right:7%;
+}
+.landing_house_img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position:5px 7px;
+}
+.form{
+    backdrop-filter: blur(5px);
+    border: 1px var(--color7) solid;
+    min-width:20vw;
+    padding:10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height:60vh;
+    width:28vw;
+    z-index:2;
+    transform: translateX(20%) translateY(16%);
+    position: absolute;
+}
+.form h1{
+    padding:6px;
+    color: var(--color5);
+}
+.form_tagline{
+    font-size: 13px;
+    padding:0 6px;
+    color:var(--color6);
+}
+.search_bar{
+    padding:6px;
+    background-color:white;
+    border-radius:6px;
+    box-shadow: 2px 2px 6px 1px var(--color2);
+    display: flex;
+}
+.search_input{
+    border:none;
+    outline:none;
+    flex:1;
+}
+.search_input::placeholder{
+    color:var(--color5);
+}
+.location_button{
+    border:0;
+    border-radius:50%;
+    padding:2px;
+    height: 25px;
+    width:25px;
+    background-color:var(--color1);
+    cursor: pointer;
+}
+.location_icon{
+    color:var(--color5);
+    font-size: 20px;
+}
+.type_div{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.search_button_div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(100%);
+}
+.search{
+    background-color: var(--color4);
+    color:var(--color1);
+    border:0;
+    border-radius: 20px;
+    padding:10px;
+    cursor:pointer;
+    flex:0.3;
+}
+@media screen and (min-width:768px) and (max-width:1023px){
+    .form h1{
+        font-size:16px;
+    }
+    .form_tagline{
+        font-size:11px;
+    }
+    .search_bar{
+        padding:0 4px;
+    }
+    .search_input::placeholder{
+        font-size: 11px;
+    }
+    .location_icon{
+        font-size: 14px;
+    }
+    .location_button{
+        height: 20px;
+        width: 20px;
+        margin:2px;
+        padding:0;
+    }
+    .type_div{
+        font-size: 13px;
+    }
+}
+/* @media screen and (min-width:375px) and (max-width:768px) {
+    .landing{
+        display: flex;
+        flex-direction: column;
+        position:unset;
+    }
+} */

@@ -1,0 +1,50 @@
+.Navbar{
+    position: absolute;
+    top:0;
+    z-index: 2;
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:15px 7%;
+    height:10vh;
+    background-color: var(--color3);
+}
+.logo{
+    height:50px;
+    width:70px;
+    cursor: pointer;
+}
+ul{
+    flex:1;
+    list-style: none;
+    text-align: center;
+}
+ul li{
+    display: inline-block;
+    font-size:18x;
+    cursor: pointer;
+    margin:10px 20px;
+    color:var(--color1);
+    transition:0.3s;
+}
+ul li a{
+    text-decoration: none;
+    color:inherit;
+}
+ul li:hover{
+    color:var(--color6);
+}
+.login_button{
+    background-color: var(--color1);
+    color:var(--color4);
+    border:none;
+    padding:10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+}
+.login_button:hover{
+    background-color: var(--color2);
+}
