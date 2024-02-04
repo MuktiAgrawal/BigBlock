@@ -1,11 +1,12 @@
 import React from 'react'
-import Landing from '../Landing/Landing'
+import Landing from './Landing/Landing'
 import styles from "./styles.module.css"
+import About from './About/About'
 const Home = () => {
   return (
-    <div className={styles.home}>
+    <div className="min-h-lvh">
         <Landing/>
-        <div> About us</div>
+        <About/>
     </div>
   )
 }

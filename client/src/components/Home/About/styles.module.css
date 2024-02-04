@@ -1,0 +1,21 @@
+.about_top{
+    display:flex;
+    padding:18vh 6vw;
+    width:100%;
+}
+.about_top_left{
+    flex:1;
+}
+.figures{
+    display:flex;
+    flex-wrap: wrap;
+}
+.figures_item{
+    flex:1 1 calc(50%);
+}
+.figures_item:nth-child(odd){
+    flex:0 0 calc(50%);
+}
+.about_left h1,.figures_item h1{
+    color:var(--color5);
+}

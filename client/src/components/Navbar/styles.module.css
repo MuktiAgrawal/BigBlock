@@ -1,5 +1,5 @@
 .Navbar{
-    position: absolute;
+    position: fixed;
     top:0;
     z-index: 2;
     width:100%;
@@ -35,6 +35,10 @@ ul li a{
 ul li:hover{
     color:var(--color6);
 }
+.active{
+    color:var(--color6);
+    border-bottom: 1px solid var(--color6);
+}
 .login_button{
     background-color: var(--color1);
     color:var(--color4);
@@ -43,7 +47,6 @@ ul li:hover{
     border-radius: 20px;
     cursor: pointer;
     font-size: 14px;
-    text-align: center;
 }
 .login_button:hover{
     background-color: var(--color2);
