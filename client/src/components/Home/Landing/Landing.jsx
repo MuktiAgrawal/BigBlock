@@ -24,7 +24,7 @@ const Landing=()=>{
     return (
         <div className={styles.landing}>    
             <div className={styles.form}>
-                <h1>FIND YOUR DREAM HOUSE</h1>
+                <h1 className="p-[6px] text-[var(--color5)] text-[34px]">FIND YOUR DREAM HOUSE</h1>
                 <p className={styles.form_tagline}>How often have you driven down a street and seen a home that was exactly what you always wanted? It's true, we all have an image of our perfect dream home, and we can help you find it!</p>
                 <form className={styles.search_bar}>
                     <input type="text" placeholder="Search for a country/city" className={styles.search_input}/>

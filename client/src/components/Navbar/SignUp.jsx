@@ -1,20 +1,32 @@
 import React from 'react'
 import { useState } from 'react';
+import axios from "axios";
 
 const SignUp = ({switchToLogin,onClose}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const handleSignUp = () => {
-        // Implement your login logic here
-        // For simplicity, let's just log the email and password for now
-        console.log('Name:', name);
-        console.log('Email:', email);
-        console.log('Password:', password);
-        console.log("handle sign up executed")
-        // Close the modal after login
-        onClose();
+        const success=sendUserData();
+        // console.log(success);
     };
+
+    const sendUserData=async ()=>{
+        try{
+            const response=await axios.post("http://localhost:5000/user/signUp",{name,email,password});
+            alert(response.data.message);
+            if(response.data.message=="User already exists"){
+                switchToLogin();
+            }
+            else if(response.data.successful==true){
+                onClose();
+            }
+            return response.data.successful;
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
 
     return (
         <div className="text-white fixed w-full h-full bg-[rgba(0,0,0,0.5) top-0 left-0 right-0 bottom-0] backdrop-blur-[1px]">

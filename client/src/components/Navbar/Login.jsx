@@ -1,18 +1,80 @@
 import React, { useState } from 'react';
+import axios from "axios";
+import { useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = ({ switchToSignUp,onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  let userDataResponse;
 
-  const handleLogin = () => {
-    // Implement your login logic here
-    // For simplicity, let's just log the email and password for now
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log("handle login executed")
-    // Close the modal after login
-    onClose();
+  const fetchUserData=async ()=>{
+    try{
+      const token=localStorage.getItem('jwtToken');
+      if(token){
+        console.log("Token in fetch user",token);
+        userDataResponse=await axios.get("http://localhost:5000/user/user-data",{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if(!userDataResponse){
+          token=await axios.post("http://localhost:5000/user/token");
+          console.log("Access token generated from refresh token");
+          userDataResponse=await axios.get("http://localhost:5000/user/user-data",{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        }
+        console.log(userDataResponse?.data);
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
   };
+
+  const handleLogin =async () => {
+    try{
+      const response=await sendUserData();
+      if(response.data.successful){
+        localStorage.setItem('jwtToken',response.data.accessToken);
+        fetchUserData();
+      }
+    }
+    catch(err){
+      console.log(err);
+    }
+  };
+
+  const sendUserData=async ()=>{
+    try{
+      const response=await axios.post("http://localhost:5000/user/login",{email,password});
+      console.log(response.data.message);
+      toast(response.data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      if(response.data.message=="User Doesn't Exist"){
+        switchToSignUp();
+      }
+      else if(response.data.successful==true){
+        onClose();
+      }
+      return response;
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
 
   return (
     <div className="text-white fixed w-full h-full bg-[rgba(0,0,0,0.5) top-0 left-0 right-0 bottom-0] backdrop-blur-[1px]">
@@ -38,6 +100,23 @@ const Login = ({ switchToSignUp,onClose }) => {
           </p>
         </div>
       </div>
+      <ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+
+/>
+{/* Same as */}
+<ToastContainer />
+<h1>{userDataResponse}</h1>
+<h1>Hello</h1>
     </div>
   );
 };

@@ -3,11 +3,12 @@ import mongoose from "mongoose"
 dotenv.config({ path: "./config.env" });
 const connectDb=async()=>{
   try{
+    console.log('here')
     await mongoose.connect(process.env.ATLAS_URI,{
-      useNewUrlParser:true,
-      useUnifiedTopology: true,
-    });
-    console.log("Connected to mongoose");
+    }).then(() => {
+
+      console.log("Connected to mongoose");
+    })
   }
   catch(err){
     console.error("Failed to connect to mongoose");

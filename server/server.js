@@ -5,6 +5,7 @@ import dotenv from "dotenv"
 import connectDb from "./db/conn.js"
 import {userRouter} from "./routes/users.js"
 // const cors = require("cors");
+import cors from "cors";
 
 const app = express();
 dotenv.config({ path: "./config.env" });
@@ -13,7 +14,7 @@ dotenv.config({ path: "./config.env" });
 connectDb();
 
 const port = process.env.PORT || 5000;
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use((err,req,res,next)=>{
     console.error(err.stack);
@@ -21,6 +22,8 @@ app.use((err,req,res,next)=>{
 })
 app.use("/user",userRouter);
 
+
+// tells what should happen when someone makes a get request to /
 app.get("/",(req,res)=>{
     return res.status(200).send("Hello World");
 })

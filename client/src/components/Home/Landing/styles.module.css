@@ -34,10 +34,7 @@
     /* transform: translateX(20%) translateY(16%); */
     position: absolute;
 }
-.form h1{
-    padding:6px;
-    color: var(--color5);
-}
+
 .form_tagline{
     font-size: 13px;
     padding:0 6px;
