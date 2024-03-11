@@ -4,44 +4,18 @@ import { useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Login = ({ switchToSignUp,onClose }) => {
+const Login = ({ switchToSignUp,onClose,setAccessToken,setRefreshToken }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  let userDataResponse;
-
-  const fetchUserData=async ()=>{
-    try{
-      const token=localStorage.getItem('jwtToken');
-      if(token){
-        console.log("Token in fetch user",token);
-        userDataResponse=await axios.get("http://localhost:5000/user/user-data",{
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        if(!userDataResponse){
-          token=await axios.post("http://localhost:5000/user/token");
-          console.log("Access token generated from refresh token");
-          userDataResponse=await axios.get("http://localhost:5000/user/user-data",{
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        }
-        console.log(userDataResponse?.data);
-      }
-    }
-    catch (err) {
-      console.log(err);
-    }
-  };
+  
 
   const handleLogin =async () => {
     try{
       const response=await sendUserData();
       if(response.data.successful){
-        localStorage.setItem('jwtToken',response.data.accessToken);
-        fetchUserData();
+        setAccessToken(response.data.accessToken);
+        setRefreshToken(response.data.refreshToken);
+        // fetchUserData();
       }
     }
     catch(err){
@@ -115,8 +89,6 @@ theme="light"
 />
 {/* Same as */}
 <ToastContainer />
-<h1>{userDataResponse}</h1>
-<h1>Hello</h1>
     </div>
   );
 };

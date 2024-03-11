@@ -3,9 +3,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt';
 
 import { UserModel } from "../models/Users.js";
+import { RefreshModel } from "../models/RefreshToken.js";
 
 const router = express.Router();
-let refresh=[];
+
 router.post('/signUp', async(req,res) => {
   const {name, email, password} = req.body;
 
@@ -24,7 +25,7 @@ router.post('/signUp', async(req,res) => {
   await newUser.save();
 
   const token = jwt.sign({id: newUser._id }, process.env.SECRET, {expiresIn: '1h' });
-  res.cookie('jwtcookie', token, {httpOnly: true, secure: true});
+  // res.cookie('jwtcookie', token, {httpOnly: true, secure: true});
   res.json({message:"User Registered Successfully",successful:true});
 });
 
@@ -52,7 +53,9 @@ router.post("/login", async(req,res) => {
   console.log(accessToken);
   const refreshToken=jwt.sign({id:user._id},process.env.REFRESH_TOKEN_SECRET)
   console.log("Refresh Token",refreshToken);
-  refresh.push(refreshToken);
+  const newRefresh=new RefreshModel({refreshToken});
+  await newRefresh.save();
+  // console.log("New refresh",newRefresh);
   // user.updateOne({...,refreshToken});
   // res.cookie('jwtcookie', token, {httpOnly: true, secure: true});
   res.json({message: "Login Successful",successful:true,accessToken,refreshToken});
@@ -61,12 +64,19 @@ router.post("/login", async(req,res) => {
 
 router.post("/token",async (req,res)=>{
   const refreshToken=req.body.refreshToken;
-  if(refreshToken==null) return res.sendStatus(401)
-  const user=await UserModel.findOne({refreshToken});
-  if(user==null) return res.sendStatus(403)
-  jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET,(err,user)=>{
-    if(err) return res.sendStatus(403)
-    const accessToken=generateAcessToken(user);
+  if(refreshToken==null) 
+    return res.sendStatus(401)
+
+  const refresh=await RefreshModel.findOne({refreshToken});
+
+  if(refresh==null) 
+    return res.status(403).json({message:"Missing refresh token"})
+
+  jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET,(err,decodedToken)=>{
+    if(err) 
+      return res.status(403).json({message:"Invalid refresh token"})
+    console.log(decodedToken);
+    const accessToken=generateAcessToken(decodedToken);
     res.json({accessToken})
   })
 })
@@ -84,6 +94,7 @@ const authenticateJWT = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decodedToken) => {
       if (err) {
+        console.log(err);
         return res.status(401).json({ message: 'Invalid token' });
       } else {
         req.userId = decodedToken.id;
@@ -97,8 +108,11 @@ const authenticateJWT = (req, res, next) => {
 
 // Protected route that requires authentication
 router.get('/user-data', authenticateJWT, async (req, res) => {
-  const user = await UserModel.findOne({ _id: req.userId });
-  res.json(user);
+  if(req.userId!=null){
+    const user = await UserModel.findOne({ _id: req.userId });
+    console.log("User data sent to client by /user-data",user);
+    res.json(user);
+  }
 });
 
 router.delete("/logout", (req, res) => {
@@ -109,8 +123,8 @@ router.delete("/logout", (req, res) => {
   //   secure: true,
   // });
   console.log("Logout router");
-  refresh=refresh.filter(token=>token!==req.body.token)
-  console.log(refresh);
+  // refresh=refresh.filter(token=>token!==req.body.token)
+  // console.log(refresh);
   res.json({ message: "Logged out successfully",successful:false });
 });
 
