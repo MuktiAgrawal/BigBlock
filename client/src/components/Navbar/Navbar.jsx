@@ -7,13 +7,22 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import ProfileToolkit from "./ProfileToolkit";
 
 const Navbar=()=>{
     const [showLogin,setShowLogin]=useState(false);
     const [showSignUp,setShowSignUp]=useState(false);
     const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
     const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
-    let userDataResponse;
+    const [userDataResponse,setData]=useState(null);
+    const [isHovered, setIsHovered] = useState(false);
+    useEffect(() => {
+        // console.log("Fetching user data on application start...");
+        if (accessToken) {
+            fetchUserData(); // Fetch user data when the component is mounted (on application start) only if accessToken is available
+        }
+    }, [accessToken]);
+    // console.log(userDataResponse);
     useEffect(() => {
         localStorage.setItem('jwtAccessToken', accessToken);
     }, [accessToken]);
@@ -43,28 +52,35 @@ const Navbar=()=>{
         setShowSignUp(true);
     }
     const handleLogout=async ()=>{
-        setAccessToken(null);
-        setRefreshToken(null);
-        localStorage.removeItem('jwtRefreshToken');
-        localStorage.removeItem('jwtAccessToken');
-        const res=await axios.delete("http://localhost:5000/user/logout");
-        console.log(res.message);
+        try{
+            const res=await axios.delete(`http://localhost:5000/user/logout/${refreshToken}`);
+            setAccessToken("");
+            setRefreshToken("");
+            localStorage.removeItem('jwtRefreshToken');
+            localStorage.removeItem('jwtAccessToken');
+            setData(null);
+        }
+        catch(err){
+            console.log(err);
+        }
     }
     const fetchUserData=async ()=>{
         try{
+            // console.log("Access token in fetch user"+accessToken)
             if(accessToken){
                 const currentTime = Date.now() / 1000; // Current time in seconds
                 const decodedToken = jwtDecode(String(accessToken)); // Decoding the JWT token
                 // console.log("Decoded Token using jwt_decode",decodedToken);
                 // console.log(currentTime);
                 if (decodedToken.exp > currentTime) {
-                    console.log("Token not expired", accessToken);
-                    userDataResponse = await axios.get("http://localhost:5000/user/user-data", {
+                    // console.log("Token not expired", accessToken);
+                    const response = await axios.get("http://localhost:5000/user/user-data", {
                         headers: {
                             Authorization: `Bearer ${accessToken}`
                         }
                     });
-                    console.log("User data response", userDataResponse?.data);
+                    setData(response.data);
+                    // console.log("User data response", response?.data);
                 }
             
                 // if expired token, generate new access token using refresh token
@@ -73,12 +89,13 @@ const Navbar=()=>{
                         { refreshToken }
                     );
                     setAccessToken(newToken.data.accessToken); 
-                    console.log("Access token generated from refresh token",newToken.data.accessToken);
-                    userDataResponse=await axios.get("http://localhost:5000/user/user-data",{
+                    // console.log("Access token generated from refresh token",newToken.data.accessToken);
+                    const response = await axios.get("http://localhost:5000/user/user-data", {
                         headers: {
                             Authorization: `Bearer ${newToken.data.accessToken}`
                         }
                     });
+                    setData(response.data);
                 }
             }
         }
@@ -107,11 +124,16 @@ const Navbar=()=>{
             </button>
             :""}
             {showLogin && <Login switchToSignUp={switchToSignUp} onClose={handleCloseModal} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken}/>} 
-            {showSignUp && <SignUp switchToLogin={switchToLogin} onClose={handleCloseModal}/>}
-            {accessToken?<button onClick={handleLogout} className={`${styles.login_button} flex items-center justify-between p-15 w-auto`}>
-                <CgProfile className='px-2 transform scale-[130%] w-auto'/>
-                Logout
-            </button>:""}
+            {showSignUp && <SignUp switchToLogin={switchToLogin} onClose={handleCloseModal} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken}/>}
+            {(accessToken && userDataResponse)?
+                <button className={`${styles.login_button} flex items-center justify-between p-15 w-auto relative`}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    >
+                    <CgProfile className='px-2 transform scale-[130%] w-auto'/>
+                    {userDataResponse.name}
+                    {isHovered && <ProfileToolkit handleLogout={handleLogout} />}
+                </button>:""}
         </div>
     )
 }

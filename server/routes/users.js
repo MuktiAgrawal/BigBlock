@@ -11,22 +11,27 @@ router.post('/signUp', async(req,res) => {
   const {name, email, password} = req.body;
 
   if(!name || !email || !password) { 
-    return res.json({message: 'Enter all fields',successful:false})
+    return res.json({message: 'Enter all fields'})
   }
   
   const user=await UserModel.findOne({email});
 
   if(user){
-    return res.json({message:"User already exists",successful:false});
+    return res.json({message:"User already exists"});
   }
 
   const hashedPassword=await bcrypt.hash(password,10)
   const newUser=new UserModel({name,email,password:hashedPassword});
   await newUser.save();
 
-  const token = jwt.sign({id: newUser._id }, process.env.SECRET, {expiresIn: '1h' });
+  const accessToken = generateAcessToken(newUser);
+  // console.log(accessToken);
+  const refreshToken=jwt.sign({id:newUser._id},process.env.REFRESH_TOKEN_SECRET,{expiresIn:'30d'});
+  // console.log("Refresh Token",refreshToken);
+  const newRefresh=new RefreshModel({refreshToken});
+  await newRefresh.save();
   // res.cookie('jwtcookie', token, {httpOnly: true, secure: true});
-  res.json({message:"User Registered Successfully",successful:true});
+  res.json({message:"User Registered Successfully",accessToken,refreshToken});
 });
 
 
@@ -34,32 +39,28 @@ router.post("/login", async(req,res) => {
   const {email, password} = req.body;
 
   if(!email || !password) {
-      return res.json({message: "Enter all fields",successful:false})
+      return res.json({message: "Enter all fields"})
   }
 
   const user = await UserModel.findOne({email});
 
   if (!user) {
-      return res.json({message: "User Doesn't Exist",successful:false});
+      return res.json({message: "User Doesn't Exist"});
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
-      return res.json({message: "Username or Password is incorrect",successful:false});
+      return res.json({message: "Username or Password is incorrect"});
   }
 
   const accessToken = generateAcessToken(user);
-  console.log(accessToken);
-  const refreshToken=jwt.sign({id:user._id},process.env.REFRESH_TOKEN_SECRET)
-  console.log("Refresh Token",refreshToken);
+  // console.log(accessToken);
+  const refreshToken=jwt.sign({id:user._id},process.env.REFRESH_TOKEN_SECRET,{expiresIn:'30d'});
+  // console.log("Refresh Token",refreshToken);
   const newRefresh=new RefreshModel({refreshToken});
   await newRefresh.save();
-  // console.log("New refresh",newRefresh);
-  // user.updateOne({...,refreshToken});
-  // res.cookie('jwtcookie', token, {httpOnly: true, secure: true});
-  res.json({message: "Login Successful",successful:true,accessToken,refreshToken});
-  
+  res.json({message: "Login Successful",accessToken,refreshToken});
 })
 
 router.post("/token",async (req,res)=>{
@@ -75,21 +76,21 @@ router.post("/token",async (req,res)=>{
   jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET,(err,decodedToken)=>{
     if(err) 
       return res.status(403).json({message:"Invalid refresh token"})
-    console.log(decodedToken);
+    // console.log(decodedToken);
     const accessToken=generateAcessToken(decodedToken);
     res.json({accessToken})
   })
 })
 
 const generateAcessToken=(user)=>{
-  return jwt.sign({id: user._id }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15s' });
+  return jwt.sign({id: user._id }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m' });
 }
 // Middleware function to authenticate JWT
 const authenticateJWT = (req, res, next) => {
   const authHeader=req.headers['authorization']
   // Bearer TOKEN
   const token=authHeader && authHeader.split(' ')[1];
-  console.log("Token in authenticate",token);
+  // console.log("Token in authenticate",token);
   // console.log(req);
   if (token) {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decodedToken) => {
@@ -110,22 +111,17 @@ const authenticateJWT = (req, res, next) => {
 router.get('/user-data', authenticateJWT, async (req, res) => {
   if(req.userId!=null){
     const user = await UserModel.findOne({ _id: req.userId });
-    console.log("User data sent to client by /user-data",user);
+    // console.log("User data sent to client by /user-data",user);
     res.json(user);
   }
 });
 
-router.delete("/logout", (req, res) => {
-  // Set jwtcookie to an empty string
-  // res.cookie("jwtcookie", "", {
-  //   httpOnly: true,
-  //   expires: new Date(0),
-  //   secure: true,
-  // });
-  console.log("Logout router");
-  // refresh=refresh.filter(token=>token!==req.body.token)
-  // console.log(refresh);
-  res.json({ message: "Logged out successfully",successful:false });
+router.delete("/logout/:refreshToken", async (req, res) => {
+  // console.log("Logout router");
+  // console.log(req.params);
+  const result=await RefreshModel.deleteOne({refreshToken:req.params.refreshToken});
+  // console.log(result);
+  res.json({ message: "Logged out successfully" });
 });
 
 export {router as userRouter};

@@ -1,0 +1,30 @@
+.container{
+    padding:0;
+    width: 100px;
+    height: auto;
+    background-color: white;
+    cursor:pointer;
+    position: absolute;
+    transform:translateX(-5%) translateY(73%);
+    transition:50ms transform;
+    width:140px;
+    max-width:100%;
+    border-radius:.3rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.14);      
+}
+
+.outer li{
+    margin:0;
+    padding:10px;
+    color:black;
+    display: flex;
+    list-style: none;
+    justify-content: space-around;
+    flex:1;
+}
+.outer li:hover{
+    background-color: rgb(207, 208, 209);
+    transition:background 0.2s;
+    border-bottom: 1px solid rgba(104, 102, 102, 0.2);
+    border-top: 1px solid rgba(104, 102, 102, 0.2);
+}

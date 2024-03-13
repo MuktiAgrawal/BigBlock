@@ -6,6 +6,8 @@ import {Route,Routes} from "react-router-dom";
 import Home from "./components/Home/Home";
 import Login from "./components/Navbar/Login";
 import { useState } from "react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App=()=>{
     return (
@@ -18,6 +20,20 @@ const App=()=>{
                     <Route path="/contact" element={<Contact/>}/>
                 </Routes>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+
+                />
+            <ToastContainer />
         </div>
     )
 }

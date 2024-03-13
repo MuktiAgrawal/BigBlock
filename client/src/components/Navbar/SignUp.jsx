@@ -1,27 +1,47 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from "axios";
+import {toast } from 'react-toastify';
 
-const SignUp = ({switchToLogin,onClose}) => {
+const SignUp = ({switchToLogin,onClose,setAccessToken,setRefreshToken }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const handleSignUp = () => {
-        const success=sendUserData();
-        // console.log(success);
+    const handleSignUp = async() => {
+        try{
+            const response=await sendUserData();
+            if(response.data.message=="User already exists"){
+                switchToLogin();
+            }
+            else if(response.data.message=="User Registered Successfully"){
+                onClose();
+            }
+            // console.log(response.data);
+            if(response.data.message=="User Registered Successfully"){
+                setAccessToken(response.data.accessToken);
+                setRefreshToken(response.data.refreshToken);
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
     };
 
     const sendUserData=async ()=>{
         try{
             const response=await axios.post("http://localhost:5000/user/signUp",{name,email,password});
-            alert(response.data.message);
-            if(response.data.message=="User already exists"){
-                switchToLogin();
-            }
-            else if(response.data.successful==true){
-                onClose();
-            }
-            return response.data.successful;
+            // alert(response.data.message);
+            toast(response.data.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+            return response;
         }
         catch(err){
             console.log(err);

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import axios from "axios";
-import { useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {toast } from 'react-toastify';
 
 const Login = ({ switchToSignUp,onClose,setAccessToken,setRefreshToken }) => {
   const [email, setEmail] = useState('');
@@ -12,7 +10,14 @@ const Login = ({ switchToSignUp,onClose,setAccessToken,setRefreshToken }) => {
   const handleLogin =async () => {
     try{
       const response=await sendUserData();
-      if(response.data.successful){
+      if(response.data.message=="User Doesn't Exist"){
+        switchToSignUp();
+      }
+      else if(response.data.message=="Login Successful"){
+        onClose();
+      }
+      // console.log(response.data);
+      if(response.data.message=="Login Successful"){
         setAccessToken(response.data.accessToken);
         setRefreshToken(response.data.refreshToken);
         // fetchUserData();
@@ -26,7 +31,6 @@ const Login = ({ switchToSignUp,onClose,setAccessToken,setRefreshToken }) => {
   const sendUserData=async ()=>{
     try{
       const response=await axios.post("http://localhost:5000/user/login",{email,password});
-      console.log(response.data.message);
       toast(response.data.message, {
         position: "top-right",
         autoClose: 5000,
@@ -37,12 +41,7 @@ const Login = ({ switchToSignUp,onClose,setAccessToken,setRefreshToken }) => {
         progress: undefined,
         theme: "light",
         });
-      if(response.data.message=="User Doesn't Exist"){
-        switchToSignUp();
-      }
-      else if(response.data.successful==true){
-        onClose();
-      }
+      
       return response;
     }
     catch(err){
@@ -74,21 +73,7 @@ const Login = ({ switchToSignUp,onClose,setAccessToken,setRefreshToken }) => {
           </p>
         </div>
       </div>
-      <ToastContainer
-position="top-right"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light"
 
-/>
-{/* Same as */}
-<ToastContainer />
     </div>
   );
 };
