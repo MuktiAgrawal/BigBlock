@@ -124,4 +124,4 @@ router.delete("/logout/:refreshToken", async (req, res) => {
   res.json({ message: "Logged out successfully" });
 });
 
-export {router as userRouter};
+export {router as userRouter,authenticateJWT};

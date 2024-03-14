@@ -4,6 +4,7 @@ import express from "express"
 import dotenv from "dotenv"
 import connectDb from "./db/conn.js"
 import {userRouter} from "./routes/users.js"
+import {propertyRouter} from "./routes/properties.js"
 // const cors = require("cors");
 import cors from "cors";
 
@@ -21,7 +22,7 @@ app.use((err,req,res,next)=>{
     res.status(500).send("Something broke!");
 })
 app.use("/user",userRouter);
-
+app.use("/property",propertyRouter);
 
 // tells what should happen when someone makes a get request to /
 app.get("/",(req,res)=>{

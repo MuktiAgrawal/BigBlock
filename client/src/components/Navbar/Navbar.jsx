@@ -134,6 +134,11 @@ const Navbar=()=>{
                     {userDataResponse.name}
                     {isHovered && <ProfileToolkit handleLogout={handleLogout} />}
                 </button>:""}
+                <button onClick={handleLogout} className={`${styles.login_button} flex items-center justify-between p-15 w-auto relative`}
+                    >
+                    <CgProfile className='px-2 transform scale-[130%] w-auto'/>
+                    Log out
+                </button>
         </div>
     )
 }
