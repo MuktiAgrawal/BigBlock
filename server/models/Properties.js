@@ -5,6 +5,7 @@ const PropertySchema=new mongoose.Schema({
     description:{type:String , required:true},
     address:{type:String , required:true},
     price:{type:Number, required:true},
+    area:{type:Number, required:true},
     bathrooms:{type:Number, required: true},
     bedrooms:{type:Number, required: true},
     furnished:{type:Boolean, required:true},
@@ -14,4 +15,4 @@ const PropertySchema=new mongoose.Schema({
     userRef:{type:String, required:true}
 },{timestamps:true});
 
-export const PropertyModel=mongoose.model("property",PropertySchema);
+export const PropertyModel=mongoose.model("Property",PropertySchema);

@@ -1,10 +1,9 @@
 import express from "express"
-import {authenticateJWT} from "./users"
+import {authenticateJWT} from "./users.js"
 import {PropertyModel} from "../models/Properties.js"
 
 const router=express.Router();
 
-router.post("/create", authenticateJWT,createProperty);
 
 const createProperty=async (req,res, next)=>{
     try{
@@ -21,4 +20,5 @@ const createProperty=async (req,res, next)=>{
     }
 }
 
+router.post("/add-property", authenticateJWT,createProperty);
 export {router as propertyRouter}

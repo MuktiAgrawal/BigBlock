@@ -108,6 +108,20 @@ const Navbar=()=>{
         fetchUserData();
     },[accessToken,refreshToken]);
 
+    const [timeoutId, setTimeoutId] = useState(null);
+
+    const handleMouseEnter = () => {
+        clearTimeout(timeoutId); // Clear any existing timeout
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        // Set a timeout to hide the toolkit after 200 milliseconds
+        const id = setTimeout(() => {
+            setIsHovered(false);
+        },200);
+        setTimeoutId(id);
+    };
     return (
         <div className={styles.Navbar}>
             <Link to="/">
@@ -127,12 +141,11 @@ const Navbar=()=>{
             {showSignUp && <SignUp switchToLogin={switchToLogin} onClose={handleCloseModal} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken}/>}
             {(accessToken && userDataResponse)?
                 <button className={`${styles.login_button} flex items-center justify-between p-15 w-auto relative`}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
+                onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}
                     >
                     <CgProfile className='px-2 transform scale-[130%] w-auto'/>
                     {userDataResponse.name}
-                    {isHovered && <ProfileToolkit handleLogout={handleLogout} />}
+                    {isHovered && <ProfileToolkit handleLogout={handleLogout} switchToLogin={switchToLogin} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}/>}
                 </button>:""}
                 <button onClick={handleLogout} className={`${styles.login_button} flex items-center justify-between p-15 w-auto relative`}
                     >

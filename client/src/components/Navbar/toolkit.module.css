@@ -5,7 +5,7 @@
     background-color: white;
     cursor:pointer;
     position: absolute;
-    transform:translateX(-5%) translateY(73%);
+    transform:translateX(-5%) translateY(67%);
     transition:50ms transform;
     width:140px;
     max-width:100%;
@@ -16,15 +16,15 @@
 .outer li{
     margin:0;
     padding:10px;
-    color:black;
+    color:var(--color6);
     display: flex;
     list-style: none;
     justify-content: space-around;
     flex:1;
 }
 .outer li:hover{
-    background-color: rgb(207, 208, 209);
+    background-color: rgb(227, 227, 227);
     transition:background 0.2s;
-    border-bottom: 1px solid rgba(104, 102, 102, 0.2);
-    border-top: 1px solid rgba(104, 102, 102, 0.2);
+    border-bottom: 1px solid rgba(147, 145, 145, 0.2);
+    border-top: 1px solid rgba(147, 145, 145, 0.2);
 }
