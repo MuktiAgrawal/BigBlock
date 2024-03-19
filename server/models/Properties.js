@@ -9,8 +9,11 @@ const PropertySchema=new mongoose.Schema({
     area:{type:Number, required:true},
     bathrooms:{type:Number, required: true},
     bedrooms:{type:Number, required: true},
-    furnished:{type:Boolean, required:true},
-    parking:{type:Boolean, required:true},
+    furnished:{type:Boolean},
+    parking:{type:Boolean},
+    garden:{type:Boolean},
+    theatre:{type:Boolean},
+    tennis:{type:Boolean},
     type:{type:String , required:true},
     imageUrls:{type:Array, required:true},
     userRef:{type:String, required:true}
