@@ -3,13 +3,17 @@ import { useState,useEffect } from 'react';
 import {toast } from 'react-toastify';
 import { IoCloseSharp } from "react-icons/io5";
 import axios from 'axios'
+import { useParams } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
 
 const AddProperty = () => {
     const [sellChecked, setSellChecked] = useState(false);
     const [rentChecked, setRentChecked] = useState(false);
     const [selectedImages, setSelectedImages] = useState([]);
     const [showImages, setShowImages] = useState(false);
-    const [propertyType, setPropertyType] = useState(""); 
+    const [propertyType, setPropertyType] = useState("");
+    const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
+    const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
     const [formData, setFormData] = useState({
         name: "",
         description:"",
@@ -19,16 +23,17 @@ const AddProperty = () => {
         area:"",
         bathrooms:"",
         bedrooms:"",
-        furnished:"",
-        parking:"",
-        garden:"",
-        tennis:"",
-        theatre:"",
+        furnished:false,
+        parking:false,
+        garden:false,
+        tennis:false,
+        theatre:false,
         type:"",
         imageUrls:[],
         userRef:""
     });
 
+    const {userId}=useParams();
 
     const handlePropertyTypeChange = (event) => {
         setPropertyType(event.target.value);
@@ -56,14 +61,43 @@ const AddProperty = () => {
     const sendPropertyData = async (formData) => {
         try {
             console.log(formData);
-            const res=await axios.post("/property/add-property",formData);
-            // You can send the property data using axios here
+            if(accessToken){
+                const currentTime = Date.now() / 1000; // Current time in seconds
+                const decodedToken = jwtDecode(String(accessToken));
+                console.log(currentTime)
+                console.log(decodedToken.exp);
+                if (decodedToken.exp < currentTime){
+                    const newToken = await axios.post("http://localhost:5000/user/token",
+                        { refreshToken }
+                    );
+                    setToken(newToken.data.accessToken);
+                }
+                console.log(accessToken);
+                const res = await axios.post(`http://localhost:5000/property/add-property/${userId}`, formData, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+                console.log(res.data);
+            }
+            else{
+                toast("Please login first.", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+            }
         } catch (err) {
             console.log(err);
         }
     };
     useEffect(()=>{
-        setFormData({...formData,"imageUrls":selectedImages});
+        // setFormData({...formData,"imageUrls":selectedImages});
         console.log(selectedImages)
     },[selectedImages]);
 
@@ -76,6 +110,7 @@ const AddProperty = () => {
         let name = e.target.name;
         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value;
         setFormData({ ...formData, [name]: value });
+        console.log("Form data in handleinput",formData);
     };
     
 
@@ -87,8 +122,13 @@ const AddProperty = () => {
             for(const image of selectedImages){
                 urls.push(URL.createObjectURL(image));
             }
-            setFormData({...formData,"imageUrls":urls})
-            // sendPropertyData(formData);
+            console.log(urls);
+            setFormData({
+                ...formData,
+                "imageUrls": urls,
+                "userRef": userId
+            });
+            sendPropertyData(formData);
         } else {
             if(!sellChecked && !rentChecked){
                 toast(`Select sell or rent`, {
@@ -114,9 +154,6 @@ const AddProperty = () => {
                     theme: "light",
                     });
             }
-            // Handle error, display a message or take appropriate action
-            // console.log(selectedImages.length);
-            // console.log(rentChecked && rentPrice);
             console.log("Please fill the details correctly.");
         }
     };
@@ -196,11 +233,11 @@ const AddProperty = () => {
                     <div className='flex gap-16'>
                         <div className='flex items-center gap-2'>
                             <p> No. of bedrooms </p>
-                            <input onChange={handleInput} value={formData.bedrooms} name="bedrooms" className='p-2 border-[var(--color2)] rounded-lg max-w-12' max='10' min='1' type='number' id="bedrooms" placeholder='1' required />
+                            <input onChange={handleInput} value={formData.bedrooms} name="bedrooms" className='p-2 border-[var(--color2)] rounded-lg max-w-12' max='10' min='1' type='number' id="bedrooms" required />
                         </div>
                         <div className='flex items-center gap-2'>
                             <p> No. of bathrooms </p>
-                            <input onChange={handleInput} value={formData.bathrooms} name="bathrooms" className='p-2 border-[var(--color2)] rounded-lg max-w-12' max='10' min='1' type='number' id="bathrooms" placeholder='1' required />
+                            <input onChange={handleInput} value={formData.bathrooms} name="bathrooms" className='p-2 border-[var(--color2)] rounded-lg max-w-12' max='10' min='1' type='number' id="bathrooms" required />
                         </div>
                     </div>
                     

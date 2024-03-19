@@ -1,13 +1,12 @@
 import React from 'react'
 import styles from "./toolkit.module.css"
-import AddProperty from './AddProperty'
 import {Link} from "react-router-dom"
-const ProfileToolkit = ({ handleLogout,switchToLogin, onMouseEnter, onMouseLeave }) => {
+const ProfileToolkit = ({ handleLogout,switchToLogin,userId, onMouseEnter, onMouseLeave }) => {
     return (
         <div className={styles.container} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <ul className={`${styles.outer}`}>
                 <li>
-                    <Link to="/add-property">
+                    <Link to={`/add-property/${userId}`}>
                         Add property
                     </Link>
                 </li>

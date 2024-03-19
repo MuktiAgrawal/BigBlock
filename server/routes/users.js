@@ -98,6 +98,8 @@ const authenticateJWT = (req, res, next) => {
         console.log(err);
         return res.status(401).json({ message: 'Invalid token' });
       } else {
+        // console.log("success")
+        // console.log(decodedToken)
         req.userId = decodedToken.id;
         next();
       }
@@ -110,8 +112,9 @@ const authenticateJWT = (req, res, next) => {
 // Protected route that requires authentication
 router.get('/user-data', authenticateJWT, async (req, res) => {
   if(req.userId!=null){
+    // console.log(req.userId);
     const user = await UserModel.findOne({ _id: req.userId });
-    // console.log("User data sent to client by /user-data",user);
+    console.log("User data sent to client by /user-data",user);
     res.json(user);
   }
 });

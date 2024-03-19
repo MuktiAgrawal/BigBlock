@@ -17,11 +17,12 @@ const Navbar=()=>{
     const [userDataResponse,setData]=useState(null);
     const [isHovered, setIsHovered] = useState(false);
     useEffect(() => {
-        // console.log("Fetching user data on application start...");
+        console.log("Fetching user data on application start...");
         if (accessToken) {
-            fetchUserData(); // Fetch user data when the component is mounted (on application start) only if accessToken is available
+            fetchUserData(); 
+            console.log(userDataResponse)
         }
-    }, [accessToken]);
+    },[]);
     // console.log(userDataResponse);
     useEffect(() => {
         localStorage.setItem('jwtAccessToken', accessToken);
@@ -71,7 +72,8 @@ const Navbar=()=>{
                 const currentTime = Date.now() / 1000; // Current time in seconds
                 const decodedToken = jwtDecode(String(accessToken)); // Decoding the JWT token
                 // console.log("Decoded Token using jwt_decode",decodedToken);
-                // console.log(currentTime);
+                console.log(currentTime);
+
                 if (decodedToken.exp > currentTime) {
                     // console.log("Token not expired", accessToken);
                     const response = await axios.get("http://localhost:5000/user/user-data", {
@@ -79,17 +81,17 @@ const Navbar=()=>{
                             Authorization: `Bearer ${accessToken}`
                         }
                     });
+                    console.log(response.data)
                     setData(response.data);
-                    // console.log("User data response", response?.data);
+                    console.log("User data response", response?.data);
                 }
-            
                 // if expired token, generate new access token using refresh token
                 else{
                     const newToken = await axios.post("http://localhost:5000/user/token",
                         { refreshToken }
                     );
                     setAccessToken(newToken.data.accessToken); 
-                    // console.log("Access token generated from refresh token",newToken.data.accessToken);
+                    console.log("Access token generated from refresh token",newToken.data.accessToken);
                     const response = await axios.get("http://localhost:5000/user/user-data", {
                         headers: {
                             Authorization: `Bearer ${newToken.data.accessToken}`
@@ -145,10 +147,9 @@ const Navbar=()=>{
                     >
                     <CgProfile className='px-2 transform scale-[130%] w-auto'/>
                     {userDataResponse.name}
-                    {isHovered && <ProfileToolkit handleLogout={handleLogout} switchToLogin={switchToLogin} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}/>}
+                    {isHovered && <ProfileToolkit handleLogout={handleLogout} switchToLogin={switchToLogin} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} userId={userDataResponse._id} />}
                 </button>:""}
-                <button onClick={handleLogout} className={`${styles.login_button} flex items-center justify-between p-15 w-auto relative`}
-                    >
+                <button onClick={handleLogout} className={`${styles.login_button} flex items-center justify-between p-15 w-auto relative`}>
                     <CgProfile className='px-2 transform scale-[130%] w-auto'/>
                     Log out
                 </button>

@@ -11,7 +11,7 @@ const createProperty=async (req,res, next)=>{
             return res.status(401).json({message:"User not logged in"});
         }
         else{
-            const property=await PropertyModel.create({});
+            const property=await PropertyModel.create(req.body);
             return res.status(201).json(property);
         }
     }catch(err){
@@ -20,5 +20,5 @@ const createProperty=async (req,res, next)=>{
     }
 }
 
-router.post("/add-property", authenticateJWT,createProperty);
+router.post("/add-property/:userId", authenticateJWT,createProperty);
 export {router as propertyRouter}

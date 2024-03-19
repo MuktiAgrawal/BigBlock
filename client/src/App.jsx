@@ -4,8 +4,6 @@ import Properties from "./components/Properties/Properties"
 import Contact from "./components/Contact/Contact";
 import {Route,Routes} from "react-router-dom";
 import Home from "./components/Home/Home";
-import Login from "./components/Navbar/Login";
-import { useState } from "react";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddProperty from "./components/Navbar/AddProperty";
@@ -19,7 +17,7 @@ const App=()=>{
                     <Route path="/" element={<Home/>}/>
                     <Route path="/properties" element={<Properties/>}/>
                     <Route path="/contact" element={<Contact/>}/>
-                    <Route path="/add-property" element={<AddProperty/>}/>
+                    <Route path="/add-property/:userId" element={<AddProperty/>}/>
                 </Routes>
             </div>
             <ToastContainer
