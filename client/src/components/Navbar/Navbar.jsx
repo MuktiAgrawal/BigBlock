@@ -17,25 +17,17 @@ const Navbar=()=>{
     const [userDataResponse,setData]=useState(null);
     const [isHovered, setIsHovered] = useState(false);
     useEffect(() => {
-        console.log("Fetching user data on application start...");
-        if (accessToken) {
-            fetchUserData(); 
-            console.log(userDataResponse)
-        }
-    },[]);
-    // console.log(userDataResponse);
-    useEffect(() => {
         localStorage.setItem('jwtAccessToken', accessToken);
     }, [accessToken]);
-
+    
     useEffect(() => {
         localStorage.setItem('jwtRefreshToken', refreshToken);
     }, [refreshToken]);
-
+    
     const setAccessToken = (token) => {
         setToken(token);
     }
-
+    
     const setRefreshToken = (token) => {
         setRefToken(token);
     }
@@ -43,7 +35,7 @@ const Navbar=()=>{
         setShowLogin(false);
         setShowSignUp(false);
     }
-
+    
     const switchToLogin=()=>{
         setShowLogin(true);
         setShowSignUp(false);
@@ -65,50 +57,80 @@ const Navbar=()=>{
             console.log(err);
         }
     }
-    const fetchUserData=async ()=>{
-        try{
-            // console.log("Access token in fetch user"+accessToken)
-            if(accessToken){
-                const currentTime = Date.now() / 1000; // Current time in seconds
-                const decodedToken = jwtDecode(String(accessToken)); // Decoding the JWT token
-                // console.log("Decoded Token using jwt_decode",decodedToken);
-                console.log(currentTime);
 
-                if (decodedToken.exp > currentTime) {
-                    // console.log("Token not expired", accessToken);
-                    const response = await axios.get("http://localhost:5000/user/user-data", {
-                        headers: {
-                            Authorization: `Bearer ${accessToken}`
-                        }
-                    });
-                    console.log(response.data)
+    const fetchUserData=async()=>{
+        if(accessToken && refreshToken){
+            try{
+                const response = await axios.get("http://localhost:5000/user/user-data", {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Refresh-token':refreshToken
+                    }
+                });
+                if(response.data.message!="Invalid token or user not logged in"){
+                    console.log(response.headers);
+                    const newAccessToken = response.headers['new-access-token'];
+                    console.log(newAccessToken);
+
+                    console.log("REsponse data", response)
+                    // setAccessToken(newAccessToken);
                     setData(response.data);
                     console.log("User data response", response?.data);
                 }
-                // if expired token, generate new access token using refresh token
-                else{
-                    const newToken = await axios.post("http://localhost:5000/user/token",
-                        { refreshToken }
-                    );
-                    setAccessToken(newToken.data.accessToken); 
-                    console.log("Access token generated from refresh token",newToken.data.accessToken);
-                    const response = await axios.get("http://localhost:5000/user/user-data", {
-                        headers: {
-                            Authorization: `Bearer ${newToken.data.accessToken}`
-                        }
-                    });
-                    setData(response.data);
-                }
+            }
+            catch(err){
+                console.log(err)
             }
         }
-        catch (error) {
-            console.log(error);
-        }
-    };
+    }
+    // const fetchUserData2=async ()=>{
+    //     try{
+    //         if(accessToken){
+    //             const currentTime = Date.now() / 1000; // Current time in seconds
+    //             const decodedToken = jwtDecode(String(accessToken)); // Decoding the JWT token
+    //             console.log("Decoded Token using jwt_decode",decodedToken);
+    //             console.log(currentTime);
+
+    //             if (decodedToken.exp > currentTime) {
+    //                 console.log("Token not expired", accessToken);
+    //                 const response = await axios.get("http://localhost:5000/user/user-data", {
+    //                     headers: {
+    //                         Authorization: `Bearer ${accessToken}`,
+    //                         'Refresh-token':refreshToken
+    //                     }
+    //                 });
+    //                 console.log(response.data)
+    //                 setData(response.data);
+    //                 console.log("User data response", response?.data);
+    //             }
+    //             // if expired token, generate new access token using refresh token
+    //             else{
+    //                 const newToken = await axios.post("http://localhost:5000/user/token",
+    //                     { refreshToken }
+    //                 );
+    //                 setAccessToken(newToken.data.accessToken); 
+    //                 console.log("Access token generated from refresh token",newToken.data.accessToken);
+    //                 const response = await axios.get("http://localhost:5000/user/user-data", {
+    //                     headers: {
+    //                         Authorization: `Bearer ${newToken.data.accessToken}`
+    //                     }
+    //                 });
+    //                 setData(response.data);
+    //             }
+    //         }
+    //     }
+    //     catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     useEffect(()=>{
         fetchUserData();
     },[accessToken,refreshToken]);
+
+    useEffect(()=>{
+        console.log(userDataResponse);
+    },[userDataResponse]);
 
     const [timeoutId, setTimeoutId] = useState(null);
 
@@ -134,7 +156,7 @@ const Navbar=()=>{
                 <CustomLink to="/properties">Properties</CustomLink>
                 <CustomLink to="/contact">Contact</CustomLink>
             </ul>
-            {!accessToken?<button onClick={switchToLogin} className={`${styles.login_button} flex items-center justify-between p-15 w-auto`}>
+            {!accessToken && !userDataResponse?<button onClick={switchToLogin} className={`${styles.login_button} flex items-center justify-between p-15 w-auto`}>
                 <CgProfile className='px-2 transform scale-[130%] w-auto'/>
                 Login/Signup
             </button>

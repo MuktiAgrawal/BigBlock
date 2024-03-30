@@ -60,24 +60,26 @@ const AddProperty = () => {
 
     const sendPropertyData = async (formData) => {
         try {
-            console.log(formData);
             if(accessToken){
-                const currentTime = Date.now() / 1000; // Current time in seconds
-                const decodedToken = jwtDecode(String(accessToken));
-                console.log(currentTime)
-                console.log(decodedToken.exp);
-                if (decodedToken.exp < currentTime){
-                    const newToken = await axios.post("http://localhost:5000/user/token",
-                        { refreshToken }
-                    );
-                    setToken(newToken.data.accessToken);
-                }
-                console.log(accessToken);
+                // const currentTime = Date.now() / 1000; // Current time in seconds
+                // const decodedToken = jwtDecode(String(accessToken));
+                // if (decodedToken.exp < currentTime){
+                //     const newToken = await axios.post("http://localhost:5000/user/token",
+                //         { refreshToken }
+                //     );
+                //     setToken(newToken.data.accessToken);
+                // }
+                // console.log(accessToken);
                 const res = await axios.post(`http://localhost:5000/property/add-property/${userId}`, formData, {
                     headers: {
-                        'Authorization': `Bearer ${accessToken}`
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Refresh-token':refreshToken
                     }
                 });
+                if(res.data.message=="User not logged in"){
+                    // open login modal 
+                    // and a toast
+                }
                 console.log(res.data);
             }
             else{
@@ -96,21 +98,13 @@ const AddProperty = () => {
             console.log(err);
         }
     };
-    useEffect(()=>{
-        // setFormData({...formData,"imageUrls":selectedImages});
-        console.log(selectedImages)
-    },[selectedImages]);
-
-    useEffect(()=>{
-        console.log(formData);
-    },[formData]);
 
 
     const handleInput = (e) => {
         let name = e.target.name;
         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value;
         setFormData({ ...formData, [name]: value });
-        console.log("Form data in handleinput",formData);
+        // console.log("Form data in handleinput",formData);
     };
     
 
@@ -122,7 +116,7 @@ const AddProperty = () => {
             for(const image of selectedImages){
                 urls.push(URL.createObjectURL(image));
             }
-            console.log(urls);
+            // console.log(urls);
             setFormData({
                 ...formData,
                 "imageUrls": urls,

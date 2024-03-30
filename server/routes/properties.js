@@ -6,9 +6,10 @@ const router=express.Router();
 
 
 const createProperty=async (req,res, next)=>{
+    console.log("inside create property")
     try{
         if(req.userId==null){
-            return res.status(401).json({message:"User not logged in"});
+            res.json({ message: "User not logged in" });
         }
         else{
             const property=await PropertyModel.create(req.body);

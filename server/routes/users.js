@@ -25,9 +25,8 @@ router.post('/signUp', async(req,res) => {
   await newUser.save();
 
   const accessToken = generateAcessToken(newUser);
-  // console.log(accessToken);
   const refreshToken=jwt.sign({id:newUser._id},process.env.REFRESH_TOKEN_SECRET,{expiresIn:'30d'});
-  // console.log("Refresh Token",refreshToken);
+
   const newRefresh=new RefreshModel({refreshToken});
   await newRefresh.save();
   // res.cookie('jwtcookie', token, {httpOnly: true, secure: true});
@@ -54,10 +53,8 @@ router.post("/login", async(req,res) => {
       return res.json({message: "Username or Password is incorrect"});
   }
 
-  const accessToken = generateAcessToken(user);
-  // console.log(accessToken);
+  const accessToken = generateAccessToken(user);
   const refreshToken=jwt.sign({id:user._id},process.env.REFRESH_TOKEN_SECRET,{expiresIn:'30d'});
-  // console.log("Refresh Token",refreshToken);
   const newRefresh=new RefreshModel({refreshToken});
   await newRefresh.save();
   res.json({message: "Login Successful",accessToken,refreshToken});
@@ -77,51 +74,75 @@ router.post("/token",async (req,res)=>{
     if(err) 
       return res.status(403).json({message:"Invalid refresh token"})
     // console.log(decodedToken);
-    const accessToken=generateAcessToken(decodedToken);
+    const accessToken=generateAccessToken(decodedToken);
     res.json({accessToken})
   })
 })
 
-const generateAcessToken=(user)=>{
-  return jwt.sign({id: user._id }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m' });
-}
-// Middleware function to authenticate JWT
-const authenticateJWT = (req, res, next) => {
-  const authHeader=req.headers['authorization']
-  // Bearer TOKEN
-  const token=authHeader && authHeader.split(' ')[1];
-  // console.log("Token in authenticate",token);
-  // console.log(req);
-  if (token) {
+const generateAccessToken = (decodedRefreshToken) => {
+  return jwt.sign({ id: decodedRefreshToken.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+};
+
+
+// Middleware function to authenticate tokens
+const authenticateJWT = async (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const refreshToken = req.headers['refresh-token'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token || !refreshToken) {
+    return res.status(401).json({ message: 'Missing token' });
+  }
+
+  try {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decodedToken) => {
       if (err) {
-        console.log(err);
-        return res.status(401).json({ message: 'Invalid token' });
+        try {
+          jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decodedRefreshToken) => {
+            if (err) {
+              console.log(err);
+              return res.json({ message: 'Invalid refresh token' });
+            } else {
+              req.userId = decodedRefreshToken.id;
+              // console.log("Refresh token verified");
+              const newAccessToken = generateAccessToken(decodedRefreshToken);
+              // console.log("New access token generated:", newAccessToken);
+              // res.setHeader('New-Access-Token', newAccessToken);
+              // res.write(newAccessToken)
+              next();
+            }
+          });
+        } catch (error) {
+          console.log(error);
+          return res.status(401).json({ message: 'Invalid token' });
+        }
+        // return res.status(401).json({ message: 'Invalid access token' });
       } else {
-        // console.log("success")
-        // console.log(decodedToken)
+        // console.log(err);
         req.userId = decodedToken.id;
+        console.log("Access token verified");
+        // res.json({message:"Access token verified"});
         next();
       }
     });
-  } else {
-    return res.status(401).json({ message: 'Missing token' });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: 'Invalid token' });
   }
 };
 
 // Protected route that requires authentication
 router.get('/user-data', authenticateJWT, async (req, res) => {
   if(req.userId!=null){
-    // console.log(req.userId);
     const user = await UserModel.findOne({ _id: req.userId });
-    console.log("User data sent to client by /user-data",user);
     res.json(user);
+  }
+  else{
+    res.json({message:"Invalid token or user not logged in"})
   }
 });
 
 router.delete("/logout/:refreshToken", async (req, res) => {
-  // console.log("Logout router");
-  // console.log(req.params);
   const result=await RefreshModel.deleteOne({refreshToken:req.params.refreshToken});
   // console.log(result);
   res.json({ message: "Logged out successfully" });
