@@ -4,7 +4,6 @@ import {toast } from 'react-toastify';
 import { IoCloseSharp } from "react-icons/io5";
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
 
 const AddProperty = () => {
     const [sellChecked, setSellChecked] = useState(false);
@@ -61,26 +60,26 @@ const AddProperty = () => {
     const sendPropertyData = async (formData) => {
         try {
             if(accessToken){
-                // const currentTime = Date.now() / 1000; // Current time in seconds
-                // const decodedToken = jwtDecode(String(accessToken));
-                // if (decodedToken.exp < currentTime){
-                //     const newToken = await axios.post("http://localhost:5000/user/token",
-                //         { refreshToken }
-                //     );
-                //     setToken(newToken.data.accessToken);
-                // }
-                // console.log(accessToken);
-                const res = await axios.post(`http://localhost:5000/property/add-property/${userId}`, formData, {
+                const response = await axios.post(`http://localhost:5000/property/add-property/${userId}`, formData, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
                         'Refresh-token':refreshToken
                     }
                 });
-                if(res.data.message=="User not logged in"){
-                    // open login modal 
-                    // and a toast
+                if(response.status==201){
+                    toast("Successfully addded property", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        });
                 }
-                console.log(res.data);
+                setToken(response.data?.accessToken);
+                // console.log(response.data);
             }
             else{
                 toast("Please login first.", {
@@ -104,19 +103,19 @@ const AddProperty = () => {
         let name = e.target.name;
         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value;
         setFormData({ ...formData, [name]: value });
-        // console.log("Form data in handleinput",formData);
     };
     
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if ((selectedImages.length<6) && (sellChecked || rentChecked)) {
+        console.log(selectedImages);
+        if ((selectedImages.length<=6) && (sellChecked || rentChecked)) {
             console.log("form filled successfully");
             let urls=[];
             for(const image of selectedImages){
                 urls.push(URL.createObjectURL(image));
             }
-            // console.log(urls);
+            console.log(urls);
             setFormData({
                 ...formData,
                 "imageUrls": urls,

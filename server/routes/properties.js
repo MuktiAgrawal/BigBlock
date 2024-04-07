@@ -8,14 +8,12 @@ const router=express.Router();
 const createProperty=async (req,res, next)=>{
     console.log("inside create property")
     try{
-        if(req.userId==null){
-            res.json({ message: "User not logged in" });
-        }
-        else{
-            const property=await PropertyModel.create(req.body);
-            return res.status(201).json(property);
-        }
-    }catch(err){
+        console.log(req.body);
+        await PropertyModel.create(req.body);
+        const accessToken=req.accessToken;
+        return res.status(201).json({accessToken,message:"Successfully added property"});
+    }
+    catch(err){
         next(err);
         console.log(err);
     }

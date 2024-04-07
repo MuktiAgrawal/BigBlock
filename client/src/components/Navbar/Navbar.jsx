@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import ProfileToolkit from "./ProfileToolkit";
 
 const Navbar=()=>{
@@ -16,6 +15,7 @@ const Navbar=()=>{
     const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
     const [userDataResponse,setData]=useState(null);
     const [isHovered, setIsHovered] = useState(false);
+    
     useEffect(() => {
         localStorage.setItem('jwtAccessToken', accessToken);
     }, [accessToken]);
@@ -68,14 +68,11 @@ const Navbar=()=>{
                     }
                 });
                 if(response.data.message!="Invalid token or user not logged in"){
-                    console.log(response.headers);
-                    const newAccessToken = response.headers['new-access-token'];
-                    console.log(newAccessToken);
-
-                    console.log("REsponse data", response)
-                    // setAccessToken(newAccessToken);
-                    setData(response.data);
-                    console.log("User data response", response?.data);
+                    if(response.data.accessToken)
+                        setAccessToken(response.data.accessToken);
+                    // console.log(response.data.accessToken);
+                    setData(response.data.user);
+                    // console.log("User data response", response?.data.user);
                 }
             }
             catch(err){
@@ -83,46 +80,6 @@ const Navbar=()=>{
             }
         }
     }
-    // const fetchUserData2=async ()=>{
-    //     try{
-    //         if(accessToken){
-    //             const currentTime = Date.now() / 1000; // Current time in seconds
-    //             const decodedToken = jwtDecode(String(accessToken)); // Decoding the JWT token
-    //             console.log("Decoded Token using jwt_decode",decodedToken);
-    //             console.log(currentTime);
-
-    //             if (decodedToken.exp > currentTime) {
-    //                 console.log("Token not expired", accessToken);
-    //                 const response = await axios.get("http://localhost:5000/user/user-data", {
-    //                     headers: {
-    //                         Authorization: `Bearer ${accessToken}`,
-    //                         'Refresh-token':refreshToken
-    //                     }
-    //                 });
-    //                 console.log(response.data)
-    //                 setData(response.data);
-    //                 console.log("User data response", response?.data);
-    //             }
-    //             // if expired token, generate new access token using refresh token
-    //             else{
-    //                 const newToken = await axios.post("http://localhost:5000/user/token",
-    //                     { refreshToken }
-    //                 );
-    //                 setAccessToken(newToken.data.accessToken); 
-    //                 console.log("Access token generated from refresh token",newToken.data.accessToken);
-    //                 const response = await axios.get("http://localhost:5000/user/user-data", {
-    //                     headers: {
-    //                         Authorization: `Bearer ${newToken.data.accessToken}`
-    //                     }
-    //                 });
-    //                 setData(response.data);
-    //             }
-    //         }
-    //     }
-    //     catch (error) {
-    //         console.log(error);
-    //     }
-    // };
 
     useEffect(()=>{
         fetchUserData();
@@ -146,6 +103,7 @@ const Navbar=()=>{
         },200);
         setTimeoutId(id);
     };
+
     return (
         <div className={styles.Navbar}>
             <Link to="/">
@@ -171,10 +129,10 @@ const Navbar=()=>{
                     {userDataResponse.name}
                     {isHovered && <ProfileToolkit handleLogout={handleLogout} switchToLogin={switchToLogin} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} userId={userDataResponse._id} />}
                 </button>:""}
-                <button onClick={handleLogout} className={`${styles.login_button} flex items-center justify-between p-15 w-auto relative`}>
+                {/* <button onClick={handleLogout} className={`${styles.login_button} flex items-center justify-between p-15 w-auto relative`}>
                     <CgProfile className='px-2 transform scale-[130%] w-auto'/>
                     Log out
-                </button>
+                </button> */}
         </div>
     )
 }

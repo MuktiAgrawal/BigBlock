@@ -107,8 +107,7 @@ const authenticateJWT = async (req, res, next) => {
               // console.log("Refresh token verified");
               const newAccessToken = generateAccessToken(decodedRefreshToken);
               // console.log("New access token generated:", newAccessToken);
-              // res.setHeader('New-Access-Token', newAccessToken);
-              // res.write(newAccessToken)
+              req.accessToken=newAccessToken;
               next();
             }
           });
@@ -118,9 +117,9 @@ const authenticateJWT = async (req, res, next) => {
         }
         // return res.status(401).json({ message: 'Invalid access token' });
       } else {
-        // console.log(err);
         req.userId = decodedToken.id;
-        console.log("Access token verified");
+        // console.log("Access token verified");
+        req.accessToken=token;
         // res.json({message:"Access token verified"});
         next();
       }
@@ -135,7 +134,9 @@ const authenticateJWT = async (req, res, next) => {
 router.get('/user-data', authenticateJWT, async (req, res) => {
   if(req.userId!=null){
     const user = await UserModel.findOne({ _id: req.userId });
-    res.json(user);
+    const accessToken=req.accessToken;
+    // console.log(accessToken);
+    res.json({user,accessToken});
   }
   else{
     res.json({message:"Invalid token or user not logged in"})
