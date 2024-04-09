@@ -6,7 +6,7 @@ const ProfileToolkit = ({ handleLogout,switchToLogin,userId, onMouseEnter, onMou
         <div className={styles.container} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <ul className={`${styles.outer}`}>
                 <li>
-                    <Link to={`/add-property/${userId}`}>
+                    <Link to={`/property/add-property/${userId}`}>
                         Add property
                     </Link>
                 </li>

@@ -4,6 +4,7 @@ import {toast } from 'react-toastify';
 import { IoCloseSharp } from "react-icons/io5";
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const AddProperty = () => {
     const [sellChecked, setSellChecked] = useState(false);
@@ -13,6 +14,8 @@ const AddProperty = () => {
     const [propertyType, setPropertyType] = useState("");
     const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
     const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
+    const navigate=useNavigate();
+    let responseData={};
     const [formData, setFormData] = useState({
         name: "",
         description:"",
@@ -60,13 +63,13 @@ const AddProperty = () => {
     const sendPropertyData = async (formData) => {
         try {
             if(accessToken){
-                const response = await axios.post(`http://localhost:5000/property/add-property/${userId}`, formData, {
+                responseData = await axios.post(`http://localhost:5000/property/add-property/${userId}`, formData, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
                         'Refresh-token':refreshToken
                     }
                 });
-                if(response.status==201){
+                if(responseData.status==201){
                     toast("Successfully addded property", {
                         position: "top-right",
                         autoClose: 5000,
@@ -78,8 +81,8 @@ const AddProperty = () => {
                         theme: "light",
                         });
                 }
-                setToken(response.data?.accessToken);
-                // console.log(response.data);
+                setToken(responseData?.data?.accessToken);
+                
             }
             else{
                 toast("Please login first.", {
@@ -108,20 +111,22 @@ const AddProperty = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(selectedImages);
-        if ((selectedImages.length<=6) && (sellChecked || rentChecked)) {
+        // console.log(selectedImages);
+        if ((selectedImages.length>=1 && selectedImages.length<=6) && (sellChecked || rentChecked)) {
             console.log("form filled successfully");
             let urls=[];
             for(const image of selectedImages){
                 urls.push(URL.createObjectURL(image));
             }
-            console.log(urls);
+            // console.log(urls);
             setFormData({
                 ...formData,
                 "imageUrls": urls,
                 "userRef": userId
             });
+            // console.log("here")
             sendPropertyData(formData);
+            navigate(`/property/each/${responseData?.data.property._id}`);
         } else {
             if(!sellChecked && !rentChecked){
                 toast(`Select sell or rent`, {
