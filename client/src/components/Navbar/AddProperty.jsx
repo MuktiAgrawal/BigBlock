@@ -15,7 +15,10 @@ const AddProperty = () => {
     const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
     const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
     const navigate=useNavigate();
+    const preset_key="fcdndbqi";
+    const cloud_name="fcdndbqi";
     let responseData={};
+    let imageUrls=[];
     const [formData, setFormData] = useState({
         name: "",
         description:"",
@@ -63,7 +66,7 @@ const AddProperty = () => {
     const sendPropertyData = async (formData) => {
         try {
             if(accessToken){
-                console.log(formData);
+                // console.log(formData);
                 responseData = await axios.post(`http://localhost:5000/property/add-property/${userId}`, formData, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
@@ -109,11 +112,11 @@ const AddProperty = () => {
         let value = e.target.type === 'checkbox' ? e.target.checked : e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value;
         setFormData({ ...formData, [name]: value });
     };
-    
+
     const handleImages = async () => {
         try{
             const imageData = new FormData();
-        selectedImages.forEach((image) => {
+            selectedImages.forEach((image) => {
             imageData.append('images', image);
         });
             const res=await axios.post("http://localhost:5000/property/upload-images",imageData);
@@ -136,8 +139,9 @@ const AddProperty = () => {
 
         if ((selectedImages.length>=1 && selectedImages.length<=6) && (sellChecked || rentChecked)) {
             console.log("form filled successfully");
-            console.log(selectedImages);
+            // console.log(selectedImages);
             const imageUrls=await handleImages();
+
             if (imageUrls) {
                 // Image URLs successfully retrieved, update formData and send data
                 sendPropertyData({ ...formData, "imageUrls": imageUrls });
@@ -145,7 +149,8 @@ const AddProperty = () => {
                 // Handle error if image URLs are not retrieved
                 console.log("Error retrieving image URLs.");
             }
-        } else {
+        } 
+        else {
             if(!sellChecked && !rentChecked){
                 toast(`Select sell or rent`, {
                     position: "top-right",

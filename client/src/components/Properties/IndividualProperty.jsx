@@ -11,11 +11,14 @@ import parking from "../../assets/garage.png"
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 const IndividualProperty = () => {
     const {propertyId}=useParams();
     const [isValidId,setIsValidId]=useState(false);
     const [propertyData, setPropertyData] = useState(null);
+    const [index,setIndex]=useState(0);
     const getPropertyData = async () => {
         // console.log("here")
         try {
@@ -29,54 +32,41 @@ const IndividualProperty = () => {
             console.log(err);
         }
     };
+    const slideLeft=()=>{
+        setIndex(index-1);
+    }
+    const slideRight=()=>{
+        setIndex(index+1);
+    }
     useEffect(()=>{
         getPropertyData();
     },[propertyId,setIsValidId])
-    console.log(propertyData);
+
     return (
         <div>
             {isValidId &&
             <div>
-                <Slider
-    infinite={true}
-    slidesToShow={4}
-    slidesToScroll={1}
-    dots={true}
-    responsive={[
-        {
-            breakpoint: 768,
-            settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1,
-            }
-        },
-        {
-            breakpoint: 992,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 1,
-            }
-        },
-        {
-            breakpoint: 1200,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 1,
-            }
-        }
-    ]}
->
-    {propertyData.imageUrls.map((imageUrl, index) => (
-        <div key={index}>
-            <img src={imageUrl} alt={`Slide ${index}`} className='h-60 w-80 m-6'/>
-        </div>
-    ))}
-</Slider>
-
-                <div>
-                    <img src={propertyData.imageUrls[0]} className='h-60 w-80 m-6'/>
+                <div className='flex m-12 mt-6 mb-0 h-[450px] max-h-[500px]'>
+                    <div className='flex justify-center items-center flex-1'>
+                        <div className='relative'>
+                            <button className='absolute top-[50%] bg-[var(--color9)] rounded-full text-xl p-2 cursor-pointer' onClick={slideLeft}> <MdOutlineKeyboardArrowLeft /></button>
+                            <img className='h-[440px] w-[600px] m-6 mt-0' src={propertyData.imageUrls[(index)%propertyData.imageUrls.length]}/>
+                            <button className='absolute top-[50%] right-0 bg-[var(--color9)] rounded-full text-xl p-2 cursor-pointer' onClick={slideRight}><MdKeyboardArrowRight /></button>
+                        </div>
+                    </div>
+                    <div className='flex-[0.5] flex flex-col h-[400px] max-h-[450px] mt-2'>
+                        <div className='flex-1 pt-0 p-6'>
+                            <img className='h-[180px] w-[300px]' src={propertyData.imageUrls[(index+1)%propertyData.imageUrls.length]}/>
+                        </div>
+                        <div className='relative flex-1  p-6'>
+                            <div className='relative w-fit'>
+                                <img className='h-[180px] w-[300px]' src={propertyData.imageUrls[(index+2)%propertyData.imageUrls.length]}/>
+                                <div className='absolute top-0 left-0 h-full w-full flex items-center justify-center z-10 opacity-55 bg-neutral-400'>+12</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className='flex h-auto p-10'>
+                <div className='flex h-auto p-10 pt-0'>
                     <div className='flex-[0.55] mr-6 '>
                         <h2>{propertyData.name}</h2>
                         <h4>{propertyData.address}</h4>
@@ -105,7 +95,7 @@ const IndividualProperty = () => {
                         <p>{propertyData.description}</p>
 
                     </div>
-                    <div className='flex-[0.45] border rounded-2xl border-[var(--color8)] p-6 pt-0 ml-10 mt-10'>
+                    <div className='flex-[0.45] border rounded-2xl border-[var(--color8)] p-6 pt-0 m-10'>
                         <h4>Facts and features</h4>
                         <div className='grid grid-cols-2 gap-8'>
                             <div className='flex h-16' >

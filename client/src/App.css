@@ -9,6 +9,7 @@
     font-family: "Josefin Sans", sans-serif;
 }
 :root{
+    --color9:rgb(208, 224, 172);
     --color8:#c9c9c9; /* light border*/
     --color7:#737171; /*border color*/
     --color6:#030303; /* text color*/

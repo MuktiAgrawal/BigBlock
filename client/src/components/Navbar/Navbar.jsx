@@ -118,7 +118,7 @@ const Navbar=()=>{
             {showLogin && <Login switchToSignUp={switchToSignUp} onClose={handleCloseModal} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken}/>} 
             {showSignUp && <SignUp switchToLogin={switchToLogin} onClose={handleCloseModal} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken}/>}
             {(accessToken && userDataResponse)?
-                <button className={`${styles.login_button} flex items-center justify-between p-15 w-auto relative`}
+                <button className={`${styles.login_button} flex items-center justify-between p-15 w-auto`}
                 onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}
                     >
                     <CgProfile className='px-2 transform scale-[130%] w-auto'/>
