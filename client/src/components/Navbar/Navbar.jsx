@@ -85,10 +85,6 @@ const Navbar=()=>{
         fetchUserData();
     },[accessToken,refreshToken]);
 
-    // useEffect(()=>{
-    //     console.log(userDataResponse);
-    // },[userDataResponse]);
-
     const [timeoutId, setTimeoutId] = useState(null);
 
     const handleMouseEnter = () => {

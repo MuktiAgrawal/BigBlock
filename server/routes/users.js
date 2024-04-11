@@ -24,7 +24,7 @@ router.post('/signUp', async(req,res) => {
   const newUser=new UserModel({name,email,password:hashedPassword});
   await newUser.save();
 
-  const accessToken = generateAcessToken(newUser);
+  const accessToken = generateAccessToken(newUser);
   const refreshToken=jwt.sign({id:newUser._id},process.env.REFRESH_TOKEN_SECRET,{expiresIn:'30d'});
 
   const newRefresh=new RefreshModel({refreshToken});

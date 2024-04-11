@@ -63,6 +63,7 @@ const AddProperty = () => {
     const sendPropertyData = async (formData) => {
         try {
             if(accessToken){
+                console.log(formData);
                 responseData = await axios.post(`http://localhost:5000/property/add-property/${userId}`, formData, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
@@ -80,6 +81,7 @@ const AddProperty = () => {
                         progress: undefined,
                         theme: "light",
                         });
+                        navigate(`/property/each/${responseData?.data?.property?._id}`);
                 }
                 setToken(responseData?.data?.accessToken);
                 
@@ -108,25 +110,41 @@ const AddProperty = () => {
         setFormData({ ...formData, [name]: value });
     };
     
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // console.log(selectedImages);
-        if ((selectedImages.length>=1 && selectedImages.length<=6) && (sellChecked || rentChecked)) {
-            console.log("form filled successfully");
-            let urls=[];
-            for(const image of selectedImages){
-                urls.push(URL.createObjectURL(image));
-            }
-            // console.log(urls);
+    const handleImages = async () => {
+        try{
+            const imageData = new FormData();
+        selectedImages.forEach((image) => {
+            imageData.append('images', image);
+        });
+            const res=await axios.post("http://localhost:5000/property/upload-images",imageData);
+            console.log(res.data);
+            console.log(res.data.imageUrls);
+            const imageUrls=res?.data?.imageUrls;
             setFormData({
                 ...formData,
-                "imageUrls": urls,
-                "userRef": userId
-            });
-            // console.log("here")
-            sendPropertyData(formData);
-            navigate(`/property/each/${responseData?.data.property._id}`);
+                "imageUrls":imageUrls
+            })
+            console.log(formData.imageUrls);
+            return imageUrls;
+        }
+        catch(err){
+            console.log(err);
+        }
+    };
+    const handleSubmit = async(event) => {
+        event.preventDefault();
+
+        if ((selectedImages.length>=1 && selectedImages.length<=6) && (sellChecked || rentChecked)) {
+            console.log("form filled successfully");
+            console.log(selectedImages);
+            const imageUrls=await handleImages();
+            if (imageUrls) {
+                // Image URLs successfully retrieved, update formData and send data
+                sendPropertyData({ ...formData, "imageUrls": imageUrls });
+            } else {
+                // Handle error if image URLs are not retrieved
+                console.log("Error retrieving image URLs.");
+            }
         } else {
             if(!sellChecked && !rentChecked){
                 toast(`Select sell or rent`, {
