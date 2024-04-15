@@ -15,10 +15,7 @@ const AddProperty = () => {
     const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
     const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
     const navigate=useNavigate();
-    const preset_key="fcdndbqi";
-    const cloud_name="fcdndbqi";
     let responseData={};
-    let imageUrls=[];
     const [formData, setFormData] = useState({
         name: "",
         description:"",
@@ -137,7 +134,7 @@ const AddProperty = () => {
     const handleSubmit = async(event) => {
         event.preventDefault();
 
-        if ((selectedImages.length>=1 && selectedImages.length<=6) && (sellChecked || rentChecked)) {
+        if ((selectedImages.length>=3 && selectedImages.length<=10) && (sellChecked || rentChecked)) {
             console.log("form filled successfully");
             // console.log(selectedImages);
             const imageUrls=await handleImages();
@@ -163,8 +160,20 @@ const AddProperty = () => {
                     theme: "light",
                     });
             }
-            if(selectedImages.length>6){
-                toast(`Remove ${selectedImages.length-6} images to submit form`, {
+            if(selectedImages.length>10){
+                toast(`Remove ${selectedImages.length-10} images to submit form`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+            }
+            if(selectedImages.length<3){
+                toast(`Upload ${3-selectedImages.length} more images to submit form`, {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -181,8 +190,8 @@ const AddProperty = () => {
 
     const handleUpload=()=>{
         setShowImages(true);
-        if(selectedImages.length>6){
-            toast(`Remove ${selectedImages.length-6} images to submit form`, {
+        if(selectedImages.length>10){
+            toast(`Remove ${selectedImages.length-10} images to submit form`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -214,12 +223,10 @@ const AddProperty = () => {
                             <p className='inline'>Type: <span className='text-sm text-[var(--color7)]'>(Select one)</span> </p>
                             <div className='flex gap-2'>
                                 <input type="radio" value="sell" checked={propertyType === "sell"} onChange={handlePropertyTypeChange} name="sell" className='w-4' />
-                                {/* <input value={formData.sell} name="sell" className='w-4' type="checkbox" id='sell' checked={sellChecked} onChange={handleSellChange}  /> */}
                                 <span>Sell</span>
                             </div>
                             <div className='flex gap-2 '>
                                 <input type="radio" value="rent" checked={propertyType === "rent"} onChange={handlePropertyTypeChange} name="rent" className='w-4' />
-                                {/* <input value={formData.rent} name="rent" className='w-4' type="checkbox" id='rent' checked={rentChecked} onChange={handleRentChange} /> */}
                                 <span>Rent</span>
                             </div>
                         </div>
@@ -290,7 +297,7 @@ const AddProperty = () => {
                     <div className='flex flex-col gap-6 pt-8'>
                         <p className='font-semibold'>
                             Upload images: 
-                            <span className='text-[var(--color7)] text-[14px]'> The first image will also be the cover image. (Maximum: 6)</span>
+                            <span className='text-[var(--color7)] text-[14px]'> The first image will also be the cover image. (Maximum: 10 Minimum: 3)</span>
                         </p>
                         <div className='flex flex-row items-center justify-between'>
                             <input name="imageUrls" type="file" accept="image/*" id="images" onChange={(e)=>setSelectedImages([...selectedImages,...e.target.files])} multiple required/>

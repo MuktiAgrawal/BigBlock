@@ -1,42 +1,21 @@
-import styles from "./styles.module.css"
+// import styles from "./styles.module.css"
 import house9 from "../../../assets/house9.jpg"
 import { IoMdLocate } from "react-icons/io";
 import MapComponent from './MapComponent';
 import {useState} from "react";
 const Landing=()=>{
-
-    const [isMapOpen, setIsMapOpen] = useState(false);
-    const [selectedAddress, setSelectedAddress] = useState(null);
-    const handleMapMarkerClick = (position) => {
-        // Here, you can use a geocoding service to get the address based on the position.
-        // For simplicity, let's assume you have a geocoding function.
-        const address = geocodeFunction(position.lat, position.lng);
-        setSelectedAddress(address);
-        console.log(selectedAddress);
-    };
-    // Example geocoding function (replace with your actual implementation)
-    const geocodeFunction = async (lat, lng) => {
-    // Implement your geocoding logic here
-    // This can be an API call to a geocoding service like Google Maps Geocoding API
-    // Return the address or other relevant information
-        return `Address for ${lat}, ${lng}`;
-    };
     return (
-        <div className={styles.landing}>    
-            <div className={styles.form}>
-                <h1 className="p-[6px] text-[var(--color5)] text-[34px]">FIND YOUR DREAM HOUSE</h1>
-                <p className={styles.form_tagline}>How often have you driven down a street and seen a home that was exactly what you always wanted? It's true, we all have an image of our perfect dream home, and we can help you find it!</p>
-                <form className={styles.search_bar}>
-                    <input type="text" placeholder="Search for a country/city" className={styles.search_input}/>
-                    <button onClick={() => setIsMapOpen(true)} className={styles.location_button}><IoMdLocate className={styles.location_icon}/></button>
-                    {isMapOpen && (
-                        <div>
-                            <MapComponent onMarkerClick={handleMapMarkerClick} />
-                            <button onClick={() => setIsMapOpen(false)}>Close Map</button>
-                        </div>
-                    )}
+        <div className='flex relative min-h-[80vh] items-center mt-[6vh]'>    
+            <div className='border border-[var(--color4)] min-w-[20vw] p-[10px] flex flex-col w-[28vw] h-[67vh] z-10 left-[14%] absolute backdrop-blur-[5px]'>
+                <h1 className="p-[6px] pt-0 pb-0 text-[var(--color5)]">FIND YOUR DREAM HOUSE</h1>
+                <p className='text-[var(--color6)] text-[14px] p-2 pt-0'>How often have you driven down a street and seen a home that was exactly what you always wanted? It's true, we all have an image of our perfect dream home, and we can help you find it!</p>
+                <form  type="submit" className='flex m-2 p-2 pl-3 bg-white rounded-3xl shadow-md'>
+                    <input type="text" placeholder="Search" className='flex-1 border-none outline-none placeholder-[var(--color5)]'/>
+                    <button className='border-none bg-[var(--color1)] h-[25px] w-[25px] rounded-full p-[2px] cursor-pointer'>
+                        <IoMdLocate className='text-[20px] text-[var(--color5)]'/>
+                    </button>
                 </form>
-                <div className={styles.type_div}>
+                <div className='flex justify-around items-center m-3'>
                     <label>Type:</label>
                     <div>
                         <input type="checkbox"/>
@@ -47,12 +26,12 @@ const Landing=()=>{
                         <span> Rent </span>
                     </div>
                 </div>
-                <div className={styles.search_button_div}>
-                    <button type="submit" className={styles.search}> Search </button>
+                <div className='flex justify-center items-center translate-y-[8px]'>
+                    <button type="submit" className='flex-[0.3] bg-[var(--color4)] text-[var(--color1)] border-none rounded-3xl p-[10px] cursor-pointer '> Search </button>
                 </div>
             </div>
-            <div className={styles.landing_house_div}>
-                <img className={styles.landing_house_img} src={house9} alt="img"/>
+            <div className='absolute left-[28%] w-[60vw] h-[80vh]'>
+                <img className='w-full h-full object-cover' src={house9} alt="img"/>
             </div>
         </div>
     )
