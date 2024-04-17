@@ -79,7 +79,7 @@ const IndividualProperty = () => {
                         <div className='grid grid-cols-7 border-2 border-[var(--color8)] rounded-2xl p-2 h-28 '>
                             <div className='flex flex-col justify-around'>
                                 <p>Price</p>
-                                <h4 className='m-0'>{propertyData?.buy_price || propertyData?.rent_price}</h4>
+                                <h4 className='m-0'>${propertyData?.buy_price?propertyData.buy_price:propertyData?.rent_price+"/month"}</h4>
                             </div>
                             <div className='border-r-2 border-[var(--color8)] mr-10'></div>
                             <div className='flex flex-col justify-around  '>

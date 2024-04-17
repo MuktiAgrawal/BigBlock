@@ -50,7 +50,7 @@ const Properties =() => {
   }
   const renderPageButtons = () => {
     const pageButtons = [];
-    for (let i = (pageSlot - 1) * pagesPerSlot + 1; i <= pageSlot * pagesPerSlot; i++) {
+    for (let i = (pageSlot - 1) * pagesPerSlot + 1; i<=totalPages && i <= pageSlot * pagesPerSlot; i++) {
       const isActive = i === pageNumber;
       const buttonClass = isActive
         ? "bg-[var(--color3)] text-white "

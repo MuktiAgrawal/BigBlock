@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddProperty from "./components/Navbar/AddProperty";
 import IndividualProperty from "./components/Properties/IndividualProperty";
+import MyProperties from "./components/Navbar/MyProperties";
 const App=()=>{
     return (
         <div className="relative min-h-[100vh] w-full overflow-x-hidden">
@@ -19,6 +20,7 @@ const App=()=>{
                     <Route path="/contact" element={<Contact/>}/>
                     <Route path="/property/add-property/:userId" element={<AddProperty/>}/>
                     <Route path="/property/each/:propertyId" element={<IndividualProperty/>}/>
+                    <Route path="/property/my-property/:userId" element={<MyProperties/>}/>
                 </Routes>
             </div>
             <ToastContainer

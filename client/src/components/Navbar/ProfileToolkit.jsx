@@ -5,11 +5,19 @@ const ProfileToolkit = ({ handleLogout,switchToLogin,userId, onMouseEnter, onMou
     return (
         <div className={styles.container} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <ul className={`${styles.outer}`}>
-                <li>
-                    <Link to={`/property/add-property/${userId}`}>
-                        Add property
-                    </Link>
-                </li>
+                {userId &&
+                <>
+                    <li>
+                        <Link to={`/property/add-property/${userId}`}>
+                            Add property
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={`/property/my-property/${userId}`}>
+                            My properties
+                        </Link>
+                    </li>
+                </>}
                 <li>Bookings</li>
                 <li onClick={handleLogout}>Logout</li>
             </ul>

@@ -73,7 +73,34 @@ const getPageProperties = async (req, res) => {
         return res.status(500).json({ message: 'Failed to fetch page properties' });
     }
 };
+
+const getMyProperties=async(req,res)=>{
+    try{
+        const userId=req.params.userId;
+        const properties=await PropertyModel.find({"userRef":userId});
+        // console.log(properties);
+        return res.status(200).json({message:"User properties retrieved successfully",properties});
+    }
+    catch(err){
+        console.log("Error retrieving my properties from database");
+        return res.status(500).json({message:"Failed to fetch user properties"})
+    }
+}
+const deleteProperty=async(req,res)=>{
+    try{
+        const propertyId=req.params.propertyId;
+        await PropertyModel.deleteOne({_id:propertyId});
+        return res.status(200).json({message:"Property deleted successfully"});
+    }
+    catch(err){
+        console.log("Error deleting property from database");
+        return res.status(500).json({message:"Failed to delete property"})
+    }
+}
+
 router.post("/add-property/:userId", authenticateJWT,createProperty);
 router.get("/each/:propertyId",getProperty);
 router.get("/",getPageProperties);
+router.get("/my-property/:userId",authenticateJWT,getMyProperties);
+router.delete("/my-property/deleteProperty/:propertyId",deleteProperty)
 export {router as propertyRouter}
