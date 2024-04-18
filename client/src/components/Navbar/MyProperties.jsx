@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import { MdLocationOn } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdOutlineModeEditOutline } from "react-icons/md";
@@ -14,7 +14,8 @@ const MyProperties = () => {
     const refreshToken = localStorage.getItem('jwtRefreshToken') || '';
     const [showConfirmationModal, setShow] = useState(false);
     const [propertyToDelete, setPropertyToDelete] = useState(null); 
-    
+    const navigate=useNavigate();
+
     const fetchData = async () => {
         try {
             if (accessToken) {
@@ -42,6 +43,11 @@ const MyProperties = () => {
         setShow(true); 
     };
 
+    const handleUpdateClick=(propertyId)=>{
+        console.log("here")
+        navigate(`/property/my-property/updateProperty/${propertyId}`);
+    }
+
     useEffect(() => {
         fetchData();
     }, [userId]);
@@ -63,7 +69,7 @@ const MyProperties = () => {
                             </div>
                         </div>
                         <div className='font-bold'>${property.buy_price ? property.buy_price : property.rent_price + "/month"}</div>
-                        <button className='z-10 absolute p-1 rounded-sm top-2 right-8 text-lg hover:bg-[var(--color8)]'><MdOutlineModeEditOutline /></button>
+                        <button onClick={()=>handleUpdateClick(property._id)} className='z-10 absolute p-1 rounded-sm top-2 right-8 text-lg hover:bg-[var(--color8)]'><MdOutlineModeEditOutline /></button>
                         <button onClick={() => handleDeleteClick(property._id)} className='z-10 absolute p-1 rounded-sm top-2 right-1 text-lg hover:bg-[var(--color8)]'><RiDeleteBinLine /></button>
                     </div>
                 ))}

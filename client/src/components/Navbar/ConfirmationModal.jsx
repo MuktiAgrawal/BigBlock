@@ -2,24 +2,35 @@ import React from 'react'
 import { IoWarning } from "react-icons/io5";
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
+import { useState,useEffect } from 'react';
 const ConfirmationModal = ({propertyId,closeConfirmationModal:closeModal,fetchData}) => {
+    const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
+    const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
+
     const handleDelete=async()=>{
         try{
-            const res=await axios.delete(`http://localhost:5000/property/my-property/deleteProperty/${propertyId}`)
-            if(res.status==200){
-                closeModal();
-                fetchData();
-                toast(res.data.message, {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                    });
+            if(accessToken){
+                const res=await axios.delete(`http://localhost:5000/property/my-property/deleteProperty/${propertyId}`,{
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Refresh-token':refreshToken
+                    }
+                })
+                if(res.status==200){
+                    closeModal();
+                    fetchData();
+                    toast(res.data.message, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        });
+                }
+                setToken(res?.data?.accessToken);
             }
         }
         catch(err){

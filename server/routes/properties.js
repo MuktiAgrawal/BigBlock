@@ -97,10 +97,33 @@ const deleteProperty=async(req,res)=>{
         return res.status(500).json({message:"Failed to delete property"})
     }
 }
+const updateProperty=async(req,res)=>{
+    try{
+        const prop=await PropertyModel.findById(req.params.propertyId);
+        if(!prop){
+            return res.status(404).json({message:"Property not found"});
+        }
+        if(prop.userRef !==req.userId){
+            return res.status(401).json({message:"You can only update your own properties."})
+        }
+        const updatedProperty=await PropertyModel.findByIdAndUpdate(
+            req.params.propertyId,
+            req.body,
+            {new:true}
+        );
+        return res.status(201).json({message:"Successfully updated",updatedProperty})
+    }
+    catch(err){
+        console.log(err);
+        
+    }
+}
 
 router.post("/add-property/:userId", authenticateJWT,createProperty);
 router.get("/each/:propertyId",getProperty);
 router.get("/",getPageProperties);
 router.get("/my-property/:userId",authenticateJWT,getMyProperties);
-router.delete("/my-property/deleteProperty/:propertyId",deleteProperty)
+router.delete("/my-property/deleteProperty/:propertyId",authenticateJWT,deleteProperty)
+router.post("/my-property/updateProperty/:propertyId",authenticateJWT,updateProperty)
+
 export {router as propertyRouter}
