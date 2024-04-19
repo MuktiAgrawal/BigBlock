@@ -6,9 +6,12 @@
     margin:0;
     padding:0;
     box-sizing: border-box;
+    /* font-family:"Poppins" */
+    /* font-family:"Source sans 3", sans-serif */
     font-family: "Josefin Sans", sans-serif;
 }
 :root{
+    --color11:#8b8b8b;
     --color10:#fffff1; /* button background beigish*/
     --color9:#d0e0ac;
     --color8:#c9c9c9; /* light border*/

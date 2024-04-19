@@ -59,7 +59,7 @@ const Login = ({ switchToSignUp,onClose,setAccessToken,setRefreshToken }) => {
         <div>
           <label className='block'>Email:</label>
           <input className='w-full text-black placeholder:text-[var(--color7)] bg-[var(--color1)] hover:border-[var(--color6)] hover:border-2 rounded-md p-3 '
-          placeholder='mail@website.com' type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+          placeholder='mail@website.com' type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
           <label className='block'>Password:</label>

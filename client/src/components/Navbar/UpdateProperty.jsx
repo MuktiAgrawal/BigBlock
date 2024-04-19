@@ -36,7 +36,7 @@ const UpdateProperty = () => {
         userRef:""
     });
 
-    const {propertyId}=useParams();
+    const {userId,propertyId}=useParams();
 
     const handlePropertyTypeChange = (event) => {
         setPropertyType(event.target.value);
@@ -62,7 +62,7 @@ const UpdateProperty = () => {
     
 
     const updatePropertyData = async (formData) => {
-        console.log("inside update")
+        // console.log("inside update")
         try {
             if(accessToken){
                 responseData = await axios.post(`http://localhost:5000/property/my-property/updateProperty/${propertyId}`, formData, {
@@ -82,7 +82,7 @@ const UpdateProperty = () => {
                         progress: undefined,
                         theme: "light",
                         });
-                        navigate(`/property/each/${propertyId}`);
+                        navigate(`/property/my-property/${userId}`);
                 }
                 setToken(responseData?.data?.accessToken);
             }
@@ -162,7 +162,6 @@ const UpdateProperty = () => {
         try {
             const response = await axios.get(`http://localhost:5000/property/each/${propertyId}`);
             if(response.status===200){
-                console.log(response.data.property)
                 setFormData(response.data.property);
                 // setSelectedImages(response.data.property.imageUrls)
                 if(response.data.property.imageUrls.length>0)
@@ -188,7 +187,7 @@ const UpdateProperty = () => {
     },[propertyId])
 
     const handleImages = async () => {
-        console.log("Inside handle image")
+        // console.log("Inside handle image")
         try{
             const imageData = new FormData();
             selectedImages.forEach((image) => {
@@ -198,7 +197,6 @@ const UpdateProperty = () => {
             const res=await axios.post("http://localhost:5000/property/upload-images",imageData);
             const imageUrls=res?.data?.imageUrls;
             const updatedUrls=[...formData.imageUrls,...imageUrls];
-            console.log(imageUrls)
             setFormData({
                 ...formData,
                 "imageUrls":updatedUrls
@@ -237,10 +235,6 @@ const handleUpload = async () => {
     }
 };
 
-
-    useEffect(()=>{
-        console.log(selectedImages);
-    })
     const handleImageRemove=(ind)=>{
         const updatedImages = formData.imageUrls.filter((image, index) => index !== ind);
         setFormData({

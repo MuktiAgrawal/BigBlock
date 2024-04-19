@@ -38,14 +38,19 @@ const MyProperties = () => {
         setShow(false);
     };
 
-    const handleDeleteClick = (propertyId) => {
+    const handleUpdateClick = (propertyId, e) => {
+        e.stopPropagation();
+        navigate(`/property/my-property/${userId}/updateProperty/${propertyId}`);
+    };
+    
+    const handleDeleteClick = (propertyId, e) => {
+        e.stopPropagation();
         setPropertyToDelete(propertyId); 
         setShow(true); 
     };
-
-    const handleUpdateClick=(propertyId)=>{
-        console.log("here")
-        navigate(`/property/my-property/updateProperty/${propertyId}`);
+    
+    const handlePropertyClick=(propertyId)=>{
+        navigate(`/property/each/${propertyId}`);
     }
 
     useEffect(() => {
@@ -54,10 +59,11 @@ const MyProperties = () => {
 
     return (
         <div>
-            <div className='flex flex-col m-6 justify-center items-center'>
-                <h3 className=''>Your Properties</h3>
+            <h3 className='text-center'>Your Properties</h3>
+            <div className='flex flex-col m-6 justify-center items-center '>
+                <div className='bg-white shadow-md p-4 max-w-[60vw] '>
                 {properties.map((property, index) => (
-                    <div className='flex relative items-center w-[60vw] m-1 p-2 pl-4 pr-6 bg-[var(--color10)] border border-[var(--color9)] rounded-xl' key={index}>
+                    <div className='flex relative items-center w-[55vw] m-2 mb-4 p-4 bg-white shadow-sm border border-[var(--color8)] rounded-lg' onClick={()=>{handlePropertyClick(property._id)}} key={index}>
                         <div className='w-[180px]'>
                             <img className='h-[100px] w-[160px]' src={property.imageUrls[0]} alt={property.name} />
                         </div>
@@ -68,11 +74,12 @@ const MyProperties = () => {
                                 <h5>{property.address}</h5>
                             </div>
                         </div>
-                        <div className='font-bold'>${property.buy_price ? property.buy_price : property.rent_price + "/month"}</div>
-                        <button onClick={()=>handleUpdateClick(property._id)} className='z-10 absolute p-1 rounded-sm top-2 right-8 text-lg hover:bg-[var(--color8)]'><MdOutlineModeEditOutline /></button>
-                        <button onClick={() => handleDeleteClick(property._id)} className='z-10 absolute p-1 rounded-sm top-2 right-1 text-lg hover:bg-[var(--color8)]'><RiDeleteBinLine /></button>
+                        <div className='font-bold text-lg'>Rs {property.buy_price ? property.buy_price : property.rent_price + "/month"}</div>
+                        <button onClick={(e) => handleUpdateClick(property._id, e)} className='z-10 absolute p-1 rounded-sm top-2 right-8 text-lg hover:bg-[var(--color8)]'><MdOutlineModeEditOutline /></button>
+                        <button onClick={(e) => handleDeleteClick(property._id, e)} className='z-10 absolute p-1 rounded-sm top-2 right-1 text-lg hover:bg-[var(--color8)]'><RiDeleteBinLine /></button>
                     </div>
                 ))}
+                </div>
             </div>
             {showConfirmationModal && <ConfirmationModal propertyId={propertyToDelete} closeConfirmationModal={closeConfirmationModal} fetchData={fetchData}/>}
         </div>

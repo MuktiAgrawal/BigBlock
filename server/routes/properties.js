@@ -10,6 +10,7 @@ const upload = multer({ dest: 'uploads/' });
 const createProperty=async (req,res, next)=>{
     try{
         req.body.userRef=req.userId;
+        console.log(req.body);
         const property=await PropertyModel.create(req.body);
         const accessToken=req.accessToken;
         return res.status(201).json({accessToken,property,message:"Successfully added property"});

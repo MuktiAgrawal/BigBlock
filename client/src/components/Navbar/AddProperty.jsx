@@ -234,7 +234,7 @@ const AddProperty = () => {
                             <div className='flex items-center gap-2'>
                                 <div>
                                     <p>Price: </p>
-                                    <p className='text-sm'>(in $)</p>
+                                    <p className='text-sm'>(in Rs)</p>
                                 </div>
                                 <input value={formData.buy_price} name="buy_price" className='p-2 border-[var(--color2)] rounded-lg max-w-24' type='number' id="buy_price" onChange={handlePriceChange} required />
                             </div>

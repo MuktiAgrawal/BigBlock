@@ -22,7 +22,7 @@ const App=()=>{
                     <Route path="/property/add-property/:userId" element={<AddProperty/>}/>
                     <Route path="/property/each/:propertyId" element={<IndividualProperty/>}/>
                     <Route path="/property/my-property/:userId" element={<MyProperties/>}/>
-                    <Route path="/property/my-property/updateProperty/:propertyId" element={<UpdateProperty/>}/>
+                    <Route path="/property/my-property/:userId/updateProperty/:propertyId" element={<UpdateProperty/>}/>
                 </Routes>
             </div>
             <ToastContainer

@@ -12,8 +12,8 @@ import "slick-carousel/slick/slick-theme.css";
 const Properties =() => {
   const navigate=useNavigate();
   const [pageNumber,setPageNumber] = useState(1);
-  const propertiesPerPage = 5;
-  const pagesPerSlot=2; 
+  const propertiesPerPage = 9;
+  const pagesPerSlot=3; 
   const [totalPages, setTotalPages]=useState(1);
   const [pageSlot,setPageSlot]=useState(1);
   const [properties,setProperties]=useState([]);
@@ -79,7 +79,7 @@ const Properties =() => {
     }
   }
   const moveToNextPage=()=>{
-    console.log("next button pressed");
+    // console.log("next button pressed");
     setPageNumber((pageSlot)*pagesPerSlot+1);
     setPageSlot(pageSlot+1);
     renderPageButtons();
@@ -90,22 +90,22 @@ const Properties =() => {
     renderPageButtons();
   }
   useEffect(()=>{
-    console.log("getpage properties called");
+    // console.log("getpage properties called");
     getPageProperties();
   },[pageNumber]);
 
   return (
     <div className='h-full w-full flex'>
       {/*left part */}
-      <div className='h-full fixed w-64 bg-red-500'>ajdkl</div>
+      <div className='h-full fixed w-64 bg-slate-500'>ajdkl</div>
       {/* right part */}
-      <div className='ml-64 mr-14 flex-1'>
+      <div className='ml-64 mr-6 flex-1 p-8 pt-0'>
         <h2 className="text-center font-bold">Properties</h2>
         {/* all cards */}
-        <div className='grid grid-cols-3 m-4 gap-6 mt-0 w-full h-auto'>
+        <div className='grid grid-cols-3 gap-4 mt-0 w-full h-auto bg-white p-4 shadow-md'>
           {/* each card */}
           {properties?.map(property => (
-          <div key={property._id} onClick={()=>openProperty(property._id)} className='h-[400px]'>
+          <div key={property._id} onClick={()=>openProperty(property._id)} className='h-[400px] rounded-lg shadow-sm border border-[var(--color8)] pb-4'>
             {/* <div className=' m-3'>
               <Slider {...settings}>
                 {property.imageUrls.map((image,index)=>(
@@ -116,38 +116,46 @@ const Properties =() => {
             <div className='m-3'><img className='h-[230px] w-full object-fill rounded-lg overflow-hidden' src={property.imageUrls[0]}/></div>
             <div className='flex justify-between p-3'>
               <h4 className='m-0'>{property.address}</h4>
-              <h4 className='m-0'>$ {property.buy_price?property.buy_price:property.rent_price+"/month"}</h4>
+              {property.buy_price?
+              <p className='m-0 pr-3 font-semibold text-lg'>Rs {property.buy_price}</p>
+              :<p className='m-0 pr-3 font-semibold text-lg'>Rs {property.rent_price}
+              <span className='text-[var(--color11)] text-sm'>/month</span>
+              </p>
+              }
             </div>
             <div className='flex p-3 pl-0'>
               <div className='flex flex-col flex-1 items-center justify-start '>
                 <div className=' text-[var(--color5)] w-fit bg-[var(--color10)] border-2 p-[6px] border-[var(--color5)] rounded-full overflow-hidden'>
-                  <LiaBedSolid className='text-[24px]'/>
+                  <LiaBedSolid className='text-[21px]'/>
                 </div>
-                <div className='text-center'>{property.bedrooms} Beds</div>
+                <div className='text-center text-sm'>{property.bedrooms} Beds</div>
               </div>
               <div className='flex-1 items-center flex flex-col justify-start'>
                 <div className=' text-[var(--color5)] bg-[var(--color10)] border-2 p-[6px] border-[var(--color5)] rounded-full overflow-hidden'>
-                  <LiaBathSolid className='text-[24px]'/>
+                  <LiaBathSolid className='text-[21px]'/>
                 </div>
-                <div className='text-center'>{property.bathrooms} Baths</div>
+                <div className='text-center text-sm'>{property.bathrooms} Baths</div>
               </div>
               <div className='flex-1 items-center flex flex-col justify-start'>
                 <div className='text-[var(--color5)] bg-[var(--color10)] border-2 p-[6px] border-[var(--color5)] rounded-full overflow-hidden'>
-                  <img src={furnished} className='w-[24px] h-[24px]'/>
+                  <img src={furnished} className='w-[21px] h-[21px]'/>
                 </div>
-                <div className='text-center'>{property.furnished ? "" : "Not "}Furnished</div>
+                {property.furnished ?
+                <div className='text-center text-sm'>Furnished</div>
+                :<div className='text-center text-[13px]'>Unfurnished</div>
+                }
               </div>
               <div className='flex-1 items-center flex flex-col justify-start'>
                 <div className='text-[var(--color5)] bg-[var(--color10)] border-2 p-[6px] border-[var(--color5)] rounded-full overflow-hidden'>
-                  <img src={area} className='w-[24px] h-[24px]'/>
+                  <img src={area} className='w-[21px] h-[21px]'/>
                 </div>
-                <div className='text-center'>{property.area} sqft</div>
+                <div className='text-center text-sm'>{property.area} sqft</div>
               </div>
             </div>
           </div>
         ))}
         </div>
-        <div className='flex items-center justify-center mt-12 mb-6'>
+        <div className='flex items-center justify-center border-t bg-white p-2 shadow-md'>
           {/* pageSlot*propertiesperPage+1 to (pageSlot+1)*propertiesPerPage */}
           {/* a loop */}
           {renderPrevButton()}

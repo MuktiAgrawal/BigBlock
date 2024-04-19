@@ -17,15 +17,12 @@ const IndividualProperty = () => {
     const [index,setIndex]=useState(0);
     const [remImages,setRemImages]=useState(0);
     const getPropertyData = async () => {
-        // console.log("here")
         try {
             const response = await axios.get(`http://localhost:5000/property/each/${propertyId}`);
             if(response.status===200){
                 setIsValidId(true);
-                // console.log(propertyData?.imageUrls?.length);
                 setPropertyData(response?.data?.property);
                 setRemImages(response?.data?.property?.imageUrls?.length-3);
-                // console.log(remImages);
             }
         } catch (err) {
             console.log(err);
@@ -76,30 +73,31 @@ const IndividualProperty = () => {
                             <div className='bg-amber-700 text-[var(--color10)] p-[5px] rounded-lg'>{propertyData?.buy_price?"For sale":"For rent"}</div>
                         </div>
                         <h4>{propertyData?.address}</h4>
-                        <div className='grid grid-cols-7 border-2 border-[var(--color8)] rounded-2xl p-2 h-28 '>
-                            <div className='flex flex-col justify-around'>
+                        <div className='flex justify-around border-2 border-[var(--color8)] rounded-2xl p-2 h-28 '>
+                            <div className='flex flex-col pr-4 justify-around border-r-2 border-[var(--color8)] mr-4'>
                                 <p>Price</p>
-                                <h4 className='m-0'>${propertyData?.buy_price?propertyData.buy_price:propertyData?.rent_price+"/month"}</h4>
+                                {propertyData.buy_price?
+                                <p className='m-0 font-semibold text-lg'><span className='text-md'>Rs </span> {propertyData.buy_price}</p>
+                                :<p className='m-0 font-semibold text-lg'><span className='text-md'>Rs </span> {propertyData.rent_price}
+                                <span className='text-[var(--color11)] text-sm'>/month</span>
+                                </p>
+                                }
                             </div>
-                            <div className='border-r-2 border-[var(--color8)] mr-10'></div>
-                            <div className='flex flex-col justify-around  '>
+                            <div className='flex flex-col justify-around pr-4 border-r-2 border-[var(--color8)] mr-4 '>
                                 <p>Bedrooms</p>
-                                <h4 className='m-0'>{propertyData?.bedrooms}</h4>
+                                <p className='m-0 font-semibold text-lg'>{propertyData?.bedrooms}</p>
                             </div>
-                            <div className='border-r-2 border-[var(--color8)] mr-10'></div>
-                            <div className='flex flex-col justify-around'>
+                            <div className='flex flex-col pr-4 justify-around border-r-2 border-[var(--color8)] mr-4'>
                                 <p>Bathrooms</p>
-                                <h4 className='m-0'>{propertyData?.bathrooms}</h4>
+                                <p className='m-0 font-semibold text-lg'>{propertyData?.bathrooms}</p>
                             </div>
-                            <div className='border-r-2 border-[var(--color8)] mr-10'></div>
-                            <div className='flex flex-col justify-around '>
+                            <div className='flex flex-col pr-4 justify-around  '>
                                 <p>Area</p>
-                                <h4 className='m-0'>{propertyData?.area} sqft</h4>
+                                <p className='m-0 font-semibold text-lg'>{propertyData?.area} sqft</p>
                             </div>
                         </div>
                         <h3>Description</h3>
                         <p>{propertyData?.description}</p>
-
                     </div>
                     <div className='flex-[0.45] border rounded-2xl border-[var(--color8)] p-6 pt-0 m-10'>
                         <h4>Facts and features</h4>
