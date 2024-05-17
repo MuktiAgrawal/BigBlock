@@ -6,12 +6,14 @@ import house2 from "../../assets/Untitled3.png";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import {toast } from 'react-toastify';
+import { useAuth } from '../contexts/AuthContext';
 
 const AddYourProperty = () => {
     const navigate=useNavigate();
     const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
     const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
     const [userDataResponse,setData]=useState(null);
+    const {switchToLogin}=useAuth();
 
     const userId="";
     const backgroundStyle = {
@@ -66,7 +68,8 @@ const AddYourProperty = () => {
                 progress: undefined,
                 theme: "light",
                 });
-            // open login 
+            // open login modal
+            switchToLogin();
         }
     }
     return (

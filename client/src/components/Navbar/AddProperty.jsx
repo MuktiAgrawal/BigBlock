@@ -5,6 +5,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const AddProperty = () => {
     const [sellChecked, setSellChecked] = useState(false);
@@ -15,6 +16,7 @@ const AddProperty = () => {
     const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
     const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
     const navigate=useNavigate();
+    const {switchToLogin}=useAuth();
     let responseData={};
     const [formData, setFormData] = useState({
         name: "",
@@ -102,6 +104,7 @@ const AddProperty = () => {
                     theme: "light",
                     });
                 // open login modal
+                switchToLogin();
             }
         } catch (err) {
             console.log(err);
