@@ -2,12 +2,15 @@ import React, { useEffect ,useState} from 'react'
 import {useNavigate} from 'react-router-dom';
 import { LiaBedSolid } from "react-icons/lia";
 import { LiaBathSolid } from "react-icons/lia";
-import furnished from "../../assets/cabinet.png"
-import area from "../../assets/area.png"
 import axios from 'axios';
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { LiaCouchSolid } from "react-icons/lia";
+import { FaChair } from "react-icons/fa6";
+import { SlSizeFullscreen } from "react-icons/sl";
+// import furnished from "../../assets/cabinet.png"
+// import area from "../../assets/area.png"
+// import Slider from "react-slick";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 
 const Properties =() => {
   const navigate=useNavigate();
@@ -18,13 +21,13 @@ const Properties =() => {
   const [pageSlot,setPageSlot]=useState(1);
   const [properties,setProperties]=useState([]);
 
-  let settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+  // let settings = {
+  //   dots: true,
+  //   infinite: true,
+  //   speed: 500,
+  //   slidesToShow: 1,
+  //   slidesToScroll: 1,
+  // };
   const getPageProperties=async ()=>{
     try{
       const res=await axios.get(`http://localhost:5000/property?page=${pageNumber}&perPage=${propertiesPerPage}`);
@@ -138,7 +141,7 @@ const Properties =() => {
               </div>
               <div className='flex-1 items-center flex flex-col justify-start'>
                 <div className='text-[var(--color5)] bg-[var(--color10)] border-2 p-[6px] border-[var(--color5)] rounded-full overflow-hidden'>
-                  <img src={furnished} className='w-[21px] h-[21px]'/>
+                  <FaChair className='text-[21px]'/>
                 </div>
                 {property.furnished ?
                 <div className='text-center text-sm'>Furnished</div>
@@ -147,7 +150,7 @@ const Properties =() => {
               </div>
               <div className='flex-1 items-center flex flex-col justify-start'>
                 <div className='text-[var(--color5)] bg-[var(--color10)] border-2 p-[6px] border-[var(--color5)] rounded-full overflow-hidden'>
-                  <img src={area} className='w-[21px] h-[21px]'/>
+                  <SlSizeFullscreen className='text-[21px]'/>
                 </div>
                 <div className='text-center text-sm'>{property.area} sqft</div>
               </div>

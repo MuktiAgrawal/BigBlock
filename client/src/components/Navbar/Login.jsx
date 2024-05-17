@@ -55,15 +55,15 @@ const Login = ({ switchToSignUp,onClose,setAccessToken,setRefreshToken }) => {
         <span className="absolute top-5 right-5 scale-150 text-2xl cursor-pointer" onClick={onClose}>
           &times;
         </span>
-        <h2 className='text-3xl'>Log In</h2>
+        <h2 className='text-3xl mt-0'>Log In</h2>
         <div>
           <label className='block'>Email:</label>
-          <input className='w-full text-black placeholder:text-[var(--color7)] bg-[var(--color1)] hover:border-[var(--color6)] hover:border-2 rounded-md p-3 '
+          <input className='w-full text-black placeholder:text-[var(--color7)] bg-[var(--color1)] hover:border-[var(--color6)] hover:border-2 rounded-md p-3 mb-3'
           placeholder='mail@website.com' type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
           <label className='block'>Password:</label>
-          <input className='w-full text-black placeholder:text-[var(--color7)] bg-[var(--color1)] hover:border-[var(--color6)] hover:border-2 rounded-md text-[11px] p-3 ' 
+          <input className='w-full text-black placeholder:text-[var(--color7)] bg-[var(--color1)] hover:border-[var(--color6)] hover:border-2 rounded-md text-[11px] p-3  mb-3' 
           placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;' type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         <div className='inline'>

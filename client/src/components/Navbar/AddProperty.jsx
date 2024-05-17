@@ -1,5 +1,5 @@
-import React from 'react'
-import { useState,useEffect } from 'react';
+import React, { useEffect } from 'react'
+import { useState } from 'react';
 import {toast } from 'react-toastify';
 import { IoCloseSharp } from "react-icons/io5";
 import axios from 'axios'
@@ -37,6 +37,10 @@ const AddProperty = () => {
 
     const {userId}=useParams();
 
+    useEffect(()=>{
+        setToken(localStorage.getItem('jwtAccessToken'))
+        setRefToken(localStorage.getItem('jwtRefreshToken'))
+    })
     const handlePropertyTypeChange = (event) => {
         setPropertyType(event.target.value);
         setFormData({...formData,"type":event.target.value});
@@ -63,7 +67,7 @@ const AddProperty = () => {
     const sendPropertyData = async (formData) => {
         try {
             if(accessToken){
-                // console.log(formData);
+                // console.log("inside");
                 responseData = await axios.post(`http://localhost:5000/property/add-property/${userId}`, formData, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
@@ -97,6 +101,7 @@ const AddProperty = () => {
                     progress: undefined,
                     theme: "light",
                     });
+                // open login modal
             }
         } catch (err) {
             console.log(err);
@@ -117,14 +122,11 @@ const AddProperty = () => {
             imageData.append('images', image);
         });
             const res=await axios.post("http://localhost:5000/property/upload-images",imageData);
-            console.log(res.data);
-            console.log(res.data.imageUrls);
             const imageUrls=res?.data?.imageUrls;
             setFormData({
                 ...formData,
                 "imageUrls":imageUrls
             })
-            console.log(formData.imageUrls);
             return imageUrls;
         }
         catch(err){

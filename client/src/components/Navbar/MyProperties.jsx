@@ -74,7 +74,12 @@ const MyProperties = () => {
                                 <h5>{property.address}</h5>
                             </div>
                         </div>
-                        <div className='font-bold text-lg'>Rs {property.buy_price ? property.buy_price : property.rent_price + "/month"}</div>
+                        {property.buy_price?
+                        <div className='font-semibold text-lg justify-start flex flex-[0.4] items-center'>Rs {property.buy_price}</div>
+                        :<div className='font-semibold text-lg justify-start flex flex-[0.4] items-center'>Rs {property.rent_price}
+                        <span className='text-[var(--color11)] text-sm'>/month</span>
+                        </div> 
+                        }
                         <button onClick={(e) => handleUpdateClick(property._id, e)} className='z-10 absolute p-1 rounded-sm top-2 right-8 text-lg hover:bg-[var(--color8)]'><MdOutlineModeEditOutline /></button>
                         <button onClick={(e) => handleDeleteClick(property._id, e)} className='z-10 absolute p-1 rounded-sm top-2 right-1 text-lg hover:bg-[var(--color8)]'><RiDeleteBinLine /></button>
                     </div>

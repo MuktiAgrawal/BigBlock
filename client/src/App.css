@@ -11,8 +11,9 @@
     font-family: "Josefin Sans", sans-serif;
 }
 :root{
+    --color12:#dadada;
     --color11:#8b8b8b;
-    --color10:#fffff1; /* button background beigish*/
+    --color10:#e0e0d0; /*button background beigish */
     --color9:#d0e0ac;
     --color8:#c9c9c9; /* light border*/
     --color7:#737171; /*border color*/
