@@ -10,7 +10,7 @@ const LatestProperty = () => {
     const navigate=useNavigate();
     const getProperty=async ()=>{
         try{
-            const res=await axios.get(`http://localhost:5000/property?page=1&perPage=3`);
+            const res=await axios.get(`http://localhost:5000/property?page=2&perPage=3`);
             if(res.status==200){
                 setProperties(res?.data?.properties);
             }

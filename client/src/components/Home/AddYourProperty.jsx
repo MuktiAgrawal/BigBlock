@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import { CgProfile } from "react-icons/cg";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { TfiWrite } from "react-icons/tfi";
-import house2 from "../../assets/Untitled3.png";
+import house2 from "../../assets/house7_background.png";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import {toast } from 'react-toastify';
