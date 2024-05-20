@@ -32,7 +32,7 @@ const LatestProperty = () => {
         }
     }
     return (
-        <div>
+        <div id="latest-property">
             <div className='relative'>
                 <div className='font-semibold text-3xl flex items-center justify-center'>
                     <span className='h-0.5 w-40 bg-[var(--color11)] mr-2'></span> 

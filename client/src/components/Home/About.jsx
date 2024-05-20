@@ -2,7 +2,7 @@ import React from 'react'
 import aboutUs from "../../assets/about-us3.jpg"
 const About = () => {
     return (
-        <div className='m-14'>
+        <div className='m-14' id="about">
             <div className='font-semibold text-3xl flex items-center justify-center'>
                 <span className='h-0.5 w-40 bg-[var(--color11)] mr-2'></span> 
                 About Us

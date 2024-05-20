@@ -7,7 +7,7 @@ import person3 from "../../assets/person3.jpg"
 
 const Testimonials = () => {
     return (
-        <div className='mb-20'>
+        <div className='mb-10' id="testimonials">
             <div className='font-semibold text-3xl flex items-center justify-center'>
                 <span className='h-0.5 w-40 bg-[var(--color11)] mr-2'></span> 
                 Testimonials

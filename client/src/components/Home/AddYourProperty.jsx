@@ -15,7 +15,6 @@ const AddYourProperty = () => {
     const [userDataResponse,setData]=useState(null);
     const {switchToLogin}=useAuth();
 
-    const userId="";
     const backgroundStyle = {
         backgroundImage: `url(${house2})`,
     };
@@ -73,7 +72,7 @@ const AddYourProperty = () => {
         }
     }
     return (
-        <div className='m-12 p-16 text-white flex flex-col min-h-[80vh] justify-between bg-cover' style={backgroundStyle}>
+        <div className='m-12 p-16 text-white flex flex-col min-h-[80vh] justify-between bg-cover' id="add-your-property" style={backgroundStyle}>
             <p className='text-xl pb-2'>Welcome</p>
             <p className='text-2xl pb-3'>Add Your Property To Our List</p>
             <p>We have a big customer base to market your property to right buyers. So get started by following these simple steps.</p>
