@@ -74,6 +74,7 @@ export const AuthProvider = ({ children }) => {
                     }
                     setData(response.data.user);
                 }
+                return response;
             } catch (err) {
                 console.log(err);
             }
@@ -85,7 +86,7 @@ export const AuthProvider = ({ children }) => {
     }, [accessToken, refreshToken]);
 
     return (
-        <AuthContext.Provider value={{ showLogin, showSignUp, switchToLogin, switchToSignUp, handleCloseModal, userDataResponse, handleLogout,accessToken }}>
+        <AuthContext.Provider value={{ showLogin, showSignUp, switchToLogin, switchToSignUp, handleCloseModal, userDataResponse, handleLogout,accessToken ,refreshToken}}>
             {children}
             {showLogin && <Login switchToSignUp={switchToSignUp} onClose={handleCloseModal} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} />}
             {showSignUp && <SignUp switchToLogin={switchToLogin} onClose={handleCloseModal} setAccessToken={setAccessToken} setRefreshToken={setRefreshToken} />}

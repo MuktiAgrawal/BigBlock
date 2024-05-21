@@ -142,6 +142,25 @@ router.get('/user-data', authenticateJWT, async (req, res) => {
     res.json({message:"Invalid token or user not logged in"})
   }
 });
+router.get('/user-data-without-auth', async (req, res) => {
+  const { propertyOwner } = req.query;
+  // console.log(propertyOwner)
+  if (!propertyOwner) {
+      return res.status(400).json({ message: "Property owner ID is required" });
+  }
+
+  try {
+      const user = await UserModel.findOne({ _id: propertyOwner });
+      if (user) {
+          res.json( user );
+      } else {
+          res.json({ message: "Invalid user id" });
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+  }
+});
 
 router.delete("/logout/:refreshToken", async (req, res) => {
   const result=await RefreshModel.deleteOne({refreshToken:req.params.refreshToken});

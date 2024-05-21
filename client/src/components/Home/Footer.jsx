@@ -20,7 +20,7 @@ const Footer = () => {
             // const elementPosition = element.offsetTop; // Get the top position of the element relative to the document
             // const offsetPosition = elementPosition - offset;
             // console.log(element.offsetTop)
-            // document.body.scrollTo({
+            // window.scrollTo({
             //     top: element.offsetTop,
             //     behavior: 'smooth'
             // });
@@ -28,11 +28,11 @@ const Footer = () => {
     };
 
     return (
-        <div>
+        <div className='text-[15px]'>
             <div className='bg-[var(--color5)] h-[60vh] bg-contain pb-10 pr-0 pl-16 pt-28 flex flex-row' style={backgroundStyle}>
                 <div className='flex-[1.5] pr-20' >
                     <img src={logo} className='h-12 w-16 mt-8'/>
-                    <p className='text-[var(--color10)] text-lg pt-6'>Find more than a house. Discover your perfect home with Big Block - your partner in real estate.</p>
+                    <p className='text-[var(--color10)]  pt-6'>Find more than a house. Discover your perfect home with Big Block - your partner in real estate.</p>
                 </div>
                 <div className='flex flex-col flex-1 text-[var(--color10)] '>
                     <a className='p-2 cursor-pointer hover:text-[var(--color2)] active:text-[var(--color2)]' onClick={() => scrollToSection("about")}>About us</a>
@@ -42,7 +42,7 @@ const Footer = () => {
                     <a className='p-2 cursor-pointer hover:text-[var(--color2)] active:text-[var(--color2)]' href="/properties">All Properties</a>
                 </div>
                 <div className='flex-1'>
-                    <p className='text-lg text-[var(--color10)]'>Follow us on</p>
+                    <p className=' text-[var(--color10)]'>Follow us on</p>
                     <div className='flex m-3 ml-0 items-center'>
                         <img src={instagram} className='h-6 mr-4'/>
                         <p className='text-[var(--color10)] cursor-pointer hover:text-[var(--color2)]'>Instagram</p>

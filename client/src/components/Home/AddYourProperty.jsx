@@ -10,47 +10,47 @@ import { useAuth } from '../contexts/AuthContext';
 
 const AddYourProperty = () => {
     const navigate=useNavigate();
-    const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
-    const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
-    const [userDataResponse,setData]=useState(null);
-    const {switchToLogin}=useAuth();
+    // const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
+    // const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
+    // const [userDataResponse,setData]=useState(null);
+    const {switchToLogin,userDataResponse}=useAuth();
 
     const backgroundStyle = {
         backgroundImage: `url(${house2})`,
     };
 
-    const setAccessToken = (token) => {
-        setToken(token);
-    }
+    // const setAccessToken = (token) => {
+    //     setToken(token);
+    // }
     
-    const setRefreshToken = (token) => {
-        setRefToken(token);
-    }
-    const fetchUserData=async()=>{
-        if(accessToken && refreshToken){
-            try{
-                const response = await axios.get("http://localhost:5000/user/user-data", {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        'Refresh-token':refreshToken
-                    }
-                });
-                if(response.data.message!="Invalid token or user not logged in"){
-                    if(response.data.accessToken)
-                        setAccessToken(response.data.accessToken);
-                    // console.log(response.data.accessToken);
-                    setData(response.data.user);
-                    // console.log("User data response", response?.data.user);
-                }
-            }
-            catch(err){
-                console.log(err)
-            }
-        }
-    }
-    useEffect(()=>{
-        fetchUserData();
-    },[accessToken,refreshToken]);
+    // const setRefreshToken = (token) => {
+    //     setRefToken(token);
+    // }
+    // const fetchUserData=async()=>{
+    //     if(accessToken && refreshToken){
+    //         try{
+    //             const response = await axios.get("http://localhost:5000/user/user-data", {
+    //                 headers: {
+    //                     Authorization: `Bearer ${accessToken}`,
+    //                     'Refresh-token':refreshToken
+    //                 }
+    //             });
+    //             if(response.data.message!="Invalid token or user not logged in"){
+    //                 if(response.data.accessToken)
+    //                     setAccessToken(response.data.accessToken);
+    //                 // console.log(response.data.accessToken);
+    //                 setData(response.data.user);
+    //                 // console.log("User data response", response?.data.user);
+    //             }
+    //         }
+    //         catch(err){
+    //             console.log(err)
+    //         }
+    //     }
+    // }
+    // useEffect(()=>{
+    //     fetchUserData();
+    // },[accessToken,refreshToken]);
 
     const handleSubmit=()=>{
         if(userDataResponse){
