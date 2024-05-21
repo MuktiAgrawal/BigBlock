@@ -60,20 +60,89 @@ const getProperty=async(req,res)=>{
 }
 const getPageProperties = async (req, res) => {
     try {
+        console.log("here")
+        const properties1=await getProperties(req);
         const pageNumber = parseInt(req.query.page) || 1; // Extract page number from request query parameters
         const propertiesPerPage = parseInt(req.query.perPage) || 20; // Extract properties per page from request query parameters
-        const count = await PropertyModel.countDocuments();
-        const properties = await PropertyModel.find()
-            .skip((pageNumber - 1) * propertiesPerPage)
-            .limit(propertiesPerPage);
+        const count=properties1.length;
+        const startIndex=(pageNumber - 1) * propertiesPerPage;
+        const endIndex=Math.min(startIndex + propertiesPerPage, count);
+        const properties = [];
+        for (let i = startIndex; i < endIndex; i++) {
+            properties.push(properties1[i]);
+        }
         // console.log(properties[0]);
+        //     .limit(propertiesPerPage);
+        // const count = await PropertyModel.countDocuments();
+        // const properties = await PropertyModel.find()
+        //     .skip((pageNumber - 1) * propertiesPerPage)
+        //     .limit(propertiesPerPage);
         // console.log(count);
+        // console.log(properties.length)
         return res.status(200).json({ properties ,count});
     } catch (error) {
         console.error('Error fetching page properties:', error);
         return res.status(500).json({ message: 'Failed to fetch page properties' });
     }
 };
+
+const getProperties=async(req,res)=>{
+    try{
+        // console.log("here")
+        let furnished=req.query.furnished;
+        if(furnished===undefined || furnished==='false'){
+            furnished={$in:[false,true]};
+        }
+        let garden=req.query.garden;
+        if(garden===undefined || garden==='false'){
+            garden={$in:[false,true]};
+        }
+        let tennis=req.query.tennis;
+        if(tennis===undefined || tennis==='false'){
+            tennis={$in:[false,true]};
+        }
+        let theatre=req.query.theatre;
+        if(theatre===undefined || theatre==='false'){
+            theatre={$in:[false,true]};
+        }
+        let parking=req.query.parking;
+        if(parking===undefined || parking==='false'){
+            parking={$in:[false,true]};
+        }
+        let type=req.query.type;
+        if(type===undefined || type==='all'){
+            type={$in:['sell','rent']}
+        }
+        else if(type==='rent'){
+            type={$in:['rent']}
+        }
+        else{
+            type={$in:['sell']}
+        }
+        const searchTerm=req.query.searchTerm || "";
+        const sort=req.query.sort || "createdAt"
+        const order=req.query.order || "desc";
+        const properties=await PropertyModel.find({
+            name:{$regex:searchTerm, $options:"i"},
+            type,
+            theatre,
+            garden,
+            parking,
+            furnished,
+            tennis
+        }).sort(
+            {
+                [sort]:order
+            }
+        )
+        // console.log(properties)
+        return properties;
+    }
+    catch(err){
+        console.log(err);
+        return res.json({message:"Error fetching properties"})
+    }
+}
 
 const getMyProperties=async(req,res)=>{
     try{
