@@ -17,27 +17,25 @@ const Footer = () => {
         let element = document.getElementById(id);
         if (element) {
             setTimeout(() => {
-                console.log(element.offsetTop);
+                // console.log(element.offsetTop);
+                // element.scrollTo({top:element.offsetTop-10vh,behavior:"smooth"})
                 element.scrollIntoView({ behavior: "smooth" });
-            }, 200); // Adjust the delay as needed (e.g., 100 milliseconds)
-        } else {
-            navigate("/", { state: { scrollTo: id } });
+            }, 200); 
         }
         // if (element) {
-        //     console.log(element.offsetTop)
-        //     element.scrollIntoView({behavior:"smooth"})
-        //     // const offset = 10 * window.innerHeight / 100; // 10vh
-        //     // const elementPosition = element.offsetTop; // Get the top position of the element relative to the document
-        //     // const offsetPosition = elementPosition - offset;
-        //     // console.log(element.offsetTop)
-        //     // window.scrollTo({
-        //     //     top: element.offsetTop,
-        //     //     behavior: 'smooth'
-        //     // });
+        //     const offset = window.innerHeight * 0.1; // 10vh
+        //     console.log(element)
+        //     console.log(window)
+            
+        //         window.scrollTo({
+        //             top: element.offsetTop-offset,
+        //             behavior: 'smooth'
+        //         });
+        //         console.log("here")
         // }
-        // else{
-        //     navigate("/", { state: { scrollTo: id } });
-        // }
+        else {
+            navigate("/", { state: { scrollTo: id } });
+        }
     };
 
     return (

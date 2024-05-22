@@ -21,7 +21,6 @@ const LatestProperty = () => {
         }
     }
     useEffect(()=>{
-        console.log("get property called")
         getProperty();
     },[])
     const openProperty=(propertyId)=>{

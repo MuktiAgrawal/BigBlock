@@ -17,10 +17,16 @@ const Home = () => {
     useEffect(() => {
       if (location?.state && location.state?.scrollTo) {
         const sectionToScroll = location.state.scrollTo;
+        // const ele=document.getElementById("home");
+        // console.log(ele)
         const element = document.getElementById(sectionToScroll);
         if (element) {
           setTimeout(() => {
-            console.log(element.offsetTop);
+            // const offset = window.innerHeight * 0.1; // 10vh
+            // console.log(offset)
+            // console.log(element.offsetTop)
+            // console.log(element.offsetTop-offset);
+            // window.scrollTo({top:element.offsetTop-offset,behavior:"smooth"})
             element.scrollIntoView({ behavior: "smooth" });
         }, 200);
         }
@@ -28,13 +34,13 @@ const Home = () => {
     }, [location?.state]);
   
   return (
-    <div className="min-h-lvh">
-        <Landing/>
-        <About/>
-        <LatestProperty/>
-        <AddYourProperty/>
-        <Testimonials/>
-        <Footer/>
+    <div id="home" className="min-h-lvh">
+      <Landing />
+      <About id="about" />
+      <LatestProperty id="latest-property" />
+      <AddYourProperty id="add-your-property" />
+      <Testimonials id="testimonials" />
+      <Footer />
     </div>
   )
 }
