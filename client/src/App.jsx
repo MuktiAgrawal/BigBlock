@@ -36,7 +36,6 @@ const App=()=>{
                 draggable
                 pauseOnHover
                 theme="light"
-
                 />
             <ToastContainer />
         </div>

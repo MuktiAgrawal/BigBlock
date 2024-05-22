@@ -39,9 +39,9 @@ const LatestProperty = () => {
                     Latest Property 
                     <span className='h-0.5 w-40 bg-[var(--color11)] ml-2'></span>
                 </div>
-                <div className='flex m-12 mt-4 bg-white shadow-md'>
+                <div className='flex m-14 mt-4 bg-white shadow-md'>
                     {properties.map((property,index)=>(
-                        <div key={index} onClick={()=>openProperty(property._id)} className='flex-1 flex flex-col m-6 bg-white shadow-sm border border-[var(--color8)] cursor-pointer'>
+                        <div key={index} onClick={()=>openProperty(property._id)} className='flex-1 flex flex-col m-6 mr-3 bg-white shadow-sm border border-[var(--color8)] cursor-pointer'>
                             <div className='relative'>
                                 <img className='h-[240px] w-full' src={property.imageUrls[0]}/>
                                 <div className='absolute top-0 right-0 text-white bg-[var(--color3)] p-2'>For {property.buy_price?"sale":"rent"} </div>
@@ -54,19 +54,19 @@ const LatestProperty = () => {
                                 <LiaBedSolid className='text-[24px]'/>
                                 <p>{property.bedrooms} Bedrooms</p>
                             </div>
-                            <div className='flex flex-col items-start p-2'>
-                                <div className='font-semibold text-lg'>
+                            <div className='flex flex-col items-start p-2 pl-4 text-[15px]'>
+                                <div className='font-semibold text-[16px] mt-2'>
                                     {property.buy_price?
                                     <p className='inline'>Rs {property.buy_price}</p>
                                     : <p className='inline'>Rs {property.rent_price}<span>/month</span></p>
                                     }
                                     <p className='inline'> - {property.name}</p>
                                 </div>
-                                <p>{property.address}</p>
-                                <p>
+                                <p className='mt-2'>{property.address}</p>
+                                {/* <p>
                                 {property.description.split(' ').slice(0, 12).join(' ')}
                                 {property.description.split(' ').length > 10 ? ' ...' : ''}
-                                </p>
+                                </p> */}
                             </div>
                         </div>
                     ))}

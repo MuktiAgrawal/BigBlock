@@ -6,25 +6,38 @@ import facebook from "../../assets/facebook.png"
 import linkedin from "../../assets/linkedin.png"
 import youtube from "../../assets/youtube.png"
 import twitter from "../../assets/twitter.png"
+import { useNavigate } from 'react-router-dom'
 
 const Footer = () => {
+    const navigate=useNavigate();
     const backgroundStyle={
         backgroundImage:`url(${footerBackground})`,
     }
     const scrollToSection = (id) => {
-        const element = document.getElementById(id);
-        // console.log(element)
+        let element = document.getElementById(id);
         if (element) {
-            element.scrollIntoView({behavior:"smooth"})
-            // const offset = 10 * window.innerHeight / 100; // 10vh
-            // const elementPosition = element.offsetTop; // Get the top position of the element relative to the document
-            // const offsetPosition = elementPosition - offset;
-            // console.log(element.offsetTop)
-            // window.scrollTo({
-            //     top: element.offsetTop,
-            //     behavior: 'smooth'
-            // });
+            setTimeout(() => {
+                console.log(element.offsetTop);
+                element.scrollIntoView({ behavior: "smooth" });
+            }, 200); // Adjust the delay as needed (e.g., 100 milliseconds)
+        } else {
+            navigate("/", { state: { scrollTo: id } });
         }
+        // if (element) {
+        //     console.log(element.offsetTop)
+        //     element.scrollIntoView({behavior:"smooth"})
+        //     // const offset = 10 * window.innerHeight / 100; // 10vh
+        //     // const elementPosition = element.offsetTop; // Get the top position of the element relative to the document
+        //     // const offsetPosition = elementPosition - offset;
+        //     // console.log(element.offsetTop)
+        //     // window.scrollTo({
+        //     //     top: element.offsetTop,
+        //     //     behavior: 'smooth'
+        //     // });
+        // }
+        // else{
+        //     navigate("/", { state: { scrollTo: id } });
+        // }
     };
 
     return (
@@ -39,7 +52,7 @@ const Footer = () => {
                     <a className='p-2 cursor-pointer hover:text-[var(--color2)] active:text-[var(--color2)]' onClick={() => scrollToSection("latest-property")}>Latest Property</a>
                     <a className='p-2 cursor-pointer hover:text-[var(--color2)] active:text-[var(--color2)]' onClick={() => scrollToSection("add-your-property")}>Submit Your Property</a>
                     <a className='p-2 cursor-pointer hover:text-[var(--color2)] active:text-[var(--color2)]' onClick={() => scrollToSection("testimonials")}>Testimonials</a>
-                    <a className='p-2 cursor-pointer hover:text-[var(--color2)] active:text-[var(--color2)]' href="/properties">All Properties</a>
+                    <a className='p-2 cursor-pointer hover:text-[var(--color2)] active:text-[var(--color2)]' href="/property">All Properties</a>
                 </div>
                 <div className='flex-1'>
                     <p className=' text-[var(--color10)] text-[17px]'>Follow us on</p>

@@ -10,6 +10,7 @@ import { MdOutlineKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
 import contactImage from "../../assets/pexels-lina-3639540.jpg";
+import Footer from '../Home/Footer';
 
 const IndividualProperty = () => {
     const { propertyId } = useParams();
@@ -259,6 +260,7 @@ const IndividualProperty = () => {
                     Property not found
                 </div>
             )}
+            <Footer/>
         </div>
     );
 };

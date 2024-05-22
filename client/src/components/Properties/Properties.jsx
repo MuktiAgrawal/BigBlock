@@ -5,6 +5,7 @@ import { LiaBathSolid } from "react-icons/lia";
 import axios from 'axios';
 import { FaChair } from "react-icons/fa6";
 import { SlSizeFullscreen } from "react-icons/sl";
+import Footer from "../Home/Footer"
 
 const Properties =() => {
   const navigate=useNavigate();
@@ -226,11 +227,12 @@ const Properties =() => {
   };
   
   return (
+    <div>
     <div className='h-full w-full flex'>
       {/*left part */}
-      <form onSubmit={handleSubmit} className='h-full fixed w-64 bg-[var(--color12)] border-r border-[var(--color10)] p-6 pt-10 text-[var(--color13)] text-sm'>
-        <button onClick={resetSideBarData} className='absolute top-0 right-0 p-2 pt-5 text-[var(--color5)] font-bold text-[13px]'>CLEAR ALL</button>
-        <div className='flex flex-col mt-2'>
+      <form onSubmit={handleSubmit} className='relative h-full w-64 bg-[var(--color10)] border-r border-[var(--color12)] p-6 pt-10=== text-[var(--color13)] text-sm'>
+        <button onClick={resetSideBarData} className='absolute top-0 right-0 p-2 pt-5 text-[var(--color4)] font-bold text-[13px]'>CLEAR ALL</button>
+        <div className='flex flex-col mt-4'>
           <label className="text-[16px]" htmlFor="searchTerm">Search term:</label>
           <input type="text" name="searchTerm" value={sideBarData.searchTerm} onChange={handleInputChange} className='text-[14px] p-2 mt-2 rounded-lg border border-[var(--color2)]' placeholder='Search..'/>
         </div>
@@ -282,11 +284,11 @@ const Properties =() => {
           </select>
         </div>
         <div className='flex justify-center mt-4'>
-          <button type="submit" className='block w-full bg-[var(--color4)] text-[var(--color1)] border-0 rounded-3xl m-2 p-[8px] cursor-pointer'>Search</button>
+          <button type="submit" className='block w-full bg-[var(--color3)] hover:bg-[var(--color4)] active:bg-[var(--color4)] text-[var(--color1)] border-0 rounded-3xl m-2 p-[8px] cursor-pointer'>Search</button>
         </div>
       </form>
       {/* right part */}
-      <div className='ml-64 mr-6 flex-1 p-8 pt-0'>
+      <div className='mr-6 flex-1 p-8 pt-0'>
         <h2 className="text-center font-bold">Properties</h2>
         {/* all cards */}
         <div className='grid grid-cols-3 gap-4 mt-0 w-full h-auto bg-white p-4 shadow-md'>
@@ -345,6 +347,8 @@ const Properties =() => {
           {renderNextButton()}
         </div>
       </div>
+      </div>
+      <Footer/>
     </div>
   )
 }
