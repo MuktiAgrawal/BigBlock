@@ -17,7 +17,7 @@ const App=()=>{
             <div className="pt-[10vh] absolute md:w-screen w-auto bg-[color:var(--color1)] z-0 h-[auto]">
                 <Routes>
                     <Route path="/" element={<Home/>}/>
-                    <Route path="/properties" element={<Properties/>}/>
+                    <Route path="/property" element={<Properties/>}/>
                     <Route path="/contact" element={<Contact/>}/>
                     <Route path="/property/add-property/:userId" element={<AddProperty/>}/>
                     <Route path="/property/each/:propertyId" element={<IndividualProperty/>}/>

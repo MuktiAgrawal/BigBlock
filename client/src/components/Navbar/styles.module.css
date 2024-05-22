@@ -33,11 +33,11 @@ ul li a{
     color:inherit;
 }
 ul li:hover{
-    color:var(--color6);
+    color:var(--color9);
 }
 .active{
-    color:var(--color6);
-    border-bottom: 1px solid var(--color6);
+    color:var(--color9);
+    border-bottom: 1px solid var(--color9);
 }
 .login_button{
     background-color: var(--color1);

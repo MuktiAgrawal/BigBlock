@@ -34,7 +34,7 @@ const Navbar=()=>{
             </Link>
             <ul>
                 <CustomLink to="/">Home</CustomLink>
-                <CustomLink to="/properties">Properties</CustomLink>
+                <CustomLink to="/property">Properties</CustomLink>
                 <CustomLink to="/contact">Contact</CustomLink>
             </ul>
             {!accessToken && !userDataResponse?<button onClick={switchToLogin} className={`${styles.login_button} flex items-center justify-between p-15 w-auto`}>
@@ -49,7 +49,7 @@ const Navbar=()=>{
                 onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}
                     >
                     <CgProfile className='px-2 transform scale-[130%] w-auto'/>
-                    {userDataResponse.name}
+                    {userDataResponse.name && userDataResponse.name.slice(0,1).toUpperCase()+userDataResponse.name.slice(1)}
                     {isHovered && <ProfileToolkit handleLogout={handleLogout} switchToLogin={switchToLogin} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} userId={userDataResponse._id} />}
                 </button>:""}
                 {/* <button onClick={handleLogout} className={`${styles.login_button} flex items-center justify-between p-15 w-auto relative`}>

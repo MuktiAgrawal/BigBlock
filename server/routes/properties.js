@@ -60,7 +60,7 @@ const getProperty=async(req,res)=>{
 }
 const getPageProperties = async (req, res) => {
     try {
-        console.log("here")
+        // console.log("here")
         const properties1=await getProperties(req);
         const pageNumber = parseInt(req.query.page) || 1; // Extract page number from request query parameters
         const propertiesPerPage = parseInt(req.query.perPage) || 20; // Extract properties per page from request query parameters
@@ -88,7 +88,6 @@ const getPageProperties = async (req, res) => {
 
 const getProperties=async(req,res)=>{
     try{
-        // console.log("here")
         let furnished=req.query.furnished;
         if(furnished===undefined || furnished==='false'){
             furnished={$in:[false,true]};
@@ -110,8 +109,25 @@ const getProperties=async(req,res)=>{
             parking={$in:[false,true]};
         }
         let type=req.query.type;
+        let sort=req.query.sort || "createdAt"
+        const order=req.query.order || "desc";
+        let sortOrder = order === 'desc' ? -1 : 1;
+
+        if(sort=="price"){
+            let newSort;
+            if(type=="sell"){
+                newSort="buy_price"
+            }
+            else if(type=="rent"){
+                newSort="rent_price"
+            }
+            else{
+                newSort=["rent_price","buy_price"]
+            }
+            sort=newSort;
+        }
         if(type===undefined || type==='all'){
-            type={$in:['sell','rent']}
+            type={$in:['rent','sell']}
         }
         else if(type==='rent'){
             type={$in:['rent']}
@@ -120,8 +136,23 @@ const getProperties=async(req,res)=>{
             type={$in:['sell']}
         }
         const searchTerm=req.query.searchTerm || "";
-        const sort=req.query.sort || "createdAt"
-        const order=req.query.order || "desc";
+        
+        let sortCriteria = {};
+        if (Array.isArray(sort)) {
+            if(sortOrder==1){
+                sortCriteria["rent_price"]=sortOrder
+                sortCriteria["buy_price"]=sortOrder
+                // sortCriteria=[{"rent_price":sortOrder,"buy_price":sortOrder}]
+            }
+            else{
+
+                sortCriteria["buy_price"]=sortOrder
+                sortCriteria["rent_price"]=sortOrder
+                    // sortCriteria=[{"buy_price":sortOrder,"rent_price":sortOrder}]
+            }
+        } else {
+            sortCriteria[sort] = sortOrder;
+        }
         const properties=await PropertyModel.find({
             name:{$regex:searchTerm, $options:"i"},
             type,
@@ -130,12 +161,7 @@ const getProperties=async(req,res)=>{
             parking,
             furnished,
             tennis
-        }).sort(
-            {
-                [sort]:order
-            }
-        )
-        // console.log(properties)
+        }).sort(sortCriteria)
         return properties;
     }
     catch(err){

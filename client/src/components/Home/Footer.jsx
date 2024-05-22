@@ -28,7 +28,7 @@ const Footer = () => {
     };
 
     return (
-        <div className='text-[15px]'>
+        <div className='text-[14px]'>
             <div className='bg-[var(--color5)] h-[60vh] bg-contain pb-10 pr-0 pl-16 pt-28 flex flex-row' style={backgroundStyle}>
                 <div className='flex-[1.5] pr-20' >
                     <img src={logo} className='h-12 w-16 mt-8'/>
@@ -42,25 +42,25 @@ const Footer = () => {
                     <a className='p-2 cursor-pointer hover:text-[var(--color2)] active:text-[var(--color2)]' href="/properties">All Properties</a>
                 </div>
                 <div className='flex-1'>
-                    <p className=' text-[var(--color10)]'>Follow us on</p>
+                    <p className=' text-[var(--color10)] text-[17px]'>Follow us on</p>
                     <div className='flex m-3 ml-0 items-center'>
-                        <img src={instagram} className='h-6 mr-4'/>
+                        <img src={instagram} className='h-5 mr-4'/>
                         <p className='text-[var(--color10)] cursor-pointer hover:text-[var(--color2)]'>Instagram</p>
                     </div>
                     <div className='flex m-3 ml-0 items-center'>
-                        <img src={facebook}  className='h-6 mr-4'/>
+                        <img src={facebook}  className='h-5 mr-4'/>
                         <p className='text-[var(--color10)] cursor-pointer hover:text-[var(--color2)]'>Facebook</p>
                     </div>
                     <div className='flex m-3 ml-0 items-center'>
-                        <img src={youtube} className='h-6 mr-4'/>
+                        <img src={youtube} className='h-5 mr-4'/>
                         <p className='text-[var(--color10)] cursor-pointer hover:text-[var(--color2)]'>Youtube</p>
                     </div>
                     <div className='flex m-3 ml-0 items-center'>
-                        <img src={linkedin} className='h-6 mr-4'/>
+                        <img src={linkedin} className='h-5 mr-4'/>
                         <p className='text-[var(--color10)] cursor-pointer hover:text-[var(--color2)]'>LinkedIn</p>
                     </div>
                     <div className='flex m-3 ml-0 items-center'>
-                        <img src={twitter}  className='h-6 mr-4'/>
+                        <img src={twitter}  className='h-5 mr-4'/>
                         <p className='text-[var(--color10)] cursor-pointer hover:text-[var(--color2)]'>Twitter</p>
                     </div>
                 </div>
