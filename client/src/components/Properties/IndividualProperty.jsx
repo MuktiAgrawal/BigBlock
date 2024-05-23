@@ -122,11 +122,11 @@ const IndividualProperty = () => {
                     <div className='flex m-12 mt-6 mb-0 h-[450px] max-h-[500px]'>
                         <div className='flex justify-center items-center flex-1'>
                             <div className='relative'>
-                                <button className='absolute top-[50%] bg-[var(--color9)] rounded-full text-xl p-2 cursor-pointer' onClick={slideLeft}>
+                                <button className='absolute top-[50%] bg-[var(--color9)] hover:bg-[var(--color2)] rounded-full text-xl p-2 cursor-pointer' onClick={slideLeft}>
                                     <MdOutlineKeyboardArrowLeft />
                                 </button>
                                 <img className='h-[440px] w-[600px] m-6 mt-0' src={propertyData?.imageUrls[(index) % propertyData.imageUrls.length]} />
-                                <button className='absolute top-[50%] right-0 bg-[var(--color9)] rounded-full text-xl p-2 cursor-pointer' onClick={slideRight}>
+                                <button className='absolute top-[50%] right-0 bg-[var(--color9)] hover:bg-[var(--color2)] rounded-full text-xl p-2 cursor-pointer' onClick={slideRight}>
                                     <MdKeyboardArrowRight />
                                 </button>
                             </div>
@@ -246,7 +246,7 @@ const IndividualProperty = () => {
                                     <label htmlFor="message" className='block text-gray-700'>Message</label>
                                     <textarea name="message" onChange={handleInputChange} value={formData.message} required className='w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300' />
                                 </div>
-                                <button type="submit" className='w-full py-2 px-4 bg-[var(--color3)] hover:bg-[var(--color5)] text-white rounded-lg transition-colors duration-300'>Contact Landlord</button>
+                                <button type="submit" className='w-full py-2 px-4 bg-[var(--color3)] hover:bg-[var(--color4)] active:bg-[var(--color4)] text-white rounded-lg transition-colors duration-300'>Contact Landlord</button>
                                 {/* <Link to={`mailto:${propertyOwnerEmail}?subject=Regarding ${propertyData.name}&body=${formData.message}`} className='w-full py-2 px-4 bg-[var(--color3)] hover:bg-[var(--color5)] text-white rounded-lg transition-colors duration-300'>
                                     con
                                 </Link> */}

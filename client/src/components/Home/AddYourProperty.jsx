@@ -2,7 +2,7 @@ import React from 'react';
 import { CgProfile } from "react-icons/cg";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { TfiWrite } from "react-icons/tfi";
-import house from "../../assets/house14_1.png";
+import house from "../../assets/sumit_property_image.png";
 import { useNavigate } from 'react-router-dom';
 import {toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
@@ -93,7 +93,7 @@ const AddYourProperty = () => {
                 </div>
             </div>
             <div className='justify-center items-center flex'>
-                <button onClick={handleSubmit} className=' bg-[var(--color3)] text-[var(--color1)] border-none rounded-3xl p-[10px] cursor-pointer '>Submit your property</button>
+                <button onClick={handleSubmit} className=' bg-[var(--color3)] hover:bg-[var(--color4)] active:bg-[var(--color4)] text-[var(--color1)] border-none rounded-3xl p-[10px] cursor-pointer '>Submit your property</button>
             </div>
         </div>
     );

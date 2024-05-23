@@ -1,4 +1,4 @@
-import house9 from "../../../assets/house9.jpg"
+import house9 from "../../../assets/landing_image.jpg"
 import { IoMdLocate } from "react-icons/io";
 import MapComponent from './MapComponent';
 import { useState } from "react";
@@ -80,7 +80,7 @@ const Landing = () => {
                         </div>
                     </div>
                     <div className='flex justify-center items-center translate-y-[8px]'>
-                        <button type="submit" className='flex-[0.3] bg-[var(--color4)] text-[var(--color1)] border-none rounded-3xl p-[10px] cursor-pointer'>
+                        <button type="submit" className='flex-[0.3] bg-[var(--color3)] hover:bg-[var(--color4)] active:bg-[var(--color4)] text-[var(--color1)] border-none rounded-3xl p-[10px] cursor-pointer'>
                             Search
                         </button>
                     </div>

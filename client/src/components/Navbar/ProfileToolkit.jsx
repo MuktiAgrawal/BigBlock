@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from "./toolkit.module.css"
 import {Link} from "react-router-dom"
-const ProfileToolkit = ({ handleLogout,switchToLogin,userId, onMouseEnter, onMouseLeave }) => {
+const ProfileToolkit = ({ handleLogout,userId, onMouseEnter, onMouseLeave }) => {
     return (
         <div className={styles.container} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <ul className={`${styles.outer}`}>
@@ -18,7 +18,6 @@ const ProfileToolkit = ({ handleLogout,switchToLogin,userId, onMouseEnter, onMou
                         </Link>
                     </li>
                 </>}
-                <li>Bookings</li>
                 <li onClick={handleLogout}>Logout</li>
             </ul>
         </div>

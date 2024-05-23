@@ -62,7 +62,7 @@ const SignUp = ({ switchToLogin, onClose, setAccessToken, setRefreshToken }) => 
     return (
         <div className="text-white fixed w-full h-full bg-[rgba(0,0,0,0.5)] top-0 left-0 right-0 bottom-0 backdrop-blur-[1px]">
             <form 
-                className="absolute min-w-[40%] min-h-[75%] flex flex-col justify-around top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-[var(--color3)] p-10"
+                className="absolute min-w-[40%] min-h-[75%] flex flex-col justify-around top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-[var(--color14)] p-10"
                 onSubmit={handleSignUp}
             >
                 <span className="absolute top-5 right-5 scale-150 text-2xl cursor-pointer" onClick={onClose}>
@@ -87,7 +87,7 @@ const SignUp = ({ switchToLogin, onClose, setAccessToken, setRefreshToken }) => 
                     <label className='block'>Password:</label>
                     <input
                         className='w-full text-black placeholder:text-[var(--color7)] bg-[var(--color1)] hover:border-[var(--color6)] hover:border-2 rounded-md text-[11px] p-3'
-                        placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;' type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                        placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;' type="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8}
                     />
                 </div>
                 <div className='inline'>
