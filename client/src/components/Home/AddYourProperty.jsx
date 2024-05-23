@@ -2,7 +2,7 @@ import React from 'react';
 import { CgProfile } from "react-icons/cg";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { TfiWrite } from "react-icons/tfi";
-import house from "../../assets/sumit_property_image.png";
+import house from "../../assets/submit_property_image.png";
 import { useNavigate } from 'react-router-dom';
 import {toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext';
