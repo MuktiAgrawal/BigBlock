@@ -3,7 +3,7 @@ import axios from 'axios';
 import Login from '../Navbar/Login';
 import SignUp from '../Navbar/SignUp';
 const AuthContext = createContext();
-
+import host from "../../host.js"
 export const useAuth = () => {
     return useContext(AuthContext);
 };
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
 
     const handleLogout = async () => {
         try {
-            await axios.delete(`http://localhost:5000/user/logout/${refreshToken}`);
+            await axios.delete(`${host.apiUrl}/user/logout/${refreshToken}`);
             setAccessToken("");
             setRefreshToken("");
             localStorage.removeItem('jwtRefreshToken');
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     const fetchUserData = async () => {
         if (accessToken && refreshToken) {
             try {
-                const response = await axios.get("http://localhost:5000/user/user-data", {
+                const response = await axios.get(`${host.apiUrl}/user/user-data`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                         'Refresh-token': refreshToken

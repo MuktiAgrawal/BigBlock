@@ -4,7 +4,7 @@ import { useParams,useNavigate } from 'react-router-dom';
 import { MdLocationOn } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdOutlineModeEditOutline } from "react-icons/md";
-
+import host from "../../host.js"
 import ConfirmationModal from './ConfirmationModal';
 
 const MyProperties = () => {
@@ -19,7 +19,7 @@ const MyProperties = () => {
     const fetchData = async () => {
         try {
             if (accessToken) {
-                const res = await axios.get(`http://localhost:5000/property/my-property/${userId}`, {
+                const res = await axios.get(`${host.apiUrl}/property/my-property/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                         'Refresh-token': refreshToken

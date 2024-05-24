@@ -4,13 +4,14 @@ import { LiaBedSolid } from "react-icons/lia";
 import { LiaBathSolid } from "react-icons/lia";
 import { SlSizeFullscreen } from "react-icons/sl";
 import {useNavigate} from 'react-router-dom';
+import host from "../../host.js"
 
 const LatestProperty = () => {
     const [properties,setProperties]=useState([]);
     const navigate=useNavigate();
     const getProperty=async ()=>{
         try{
-            const res=await axios.get(`http://localhost:5000/property?page=2&perPage=3`);
+            const res=await axios.get(`${host.apiUrl}/property?page=2&perPage=3`);
             if(res.status==200){
                 setProperties(res?.data?.properties);
             }

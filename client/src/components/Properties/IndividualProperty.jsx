@@ -11,6 +11,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
 import contactImage from "../../assets/pexels-lina-3639540.jpg";
 import Footer from '../Home/Footer';
+import host from "../../host.js"
 
 const IndividualProperty = () => {
     const { propertyId } = useParams();
@@ -30,13 +31,13 @@ const IndividualProperty = () => {
 
     const getPropertyData = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/property/each/${propertyId}`);
+            const response = await axios.get(`${host.apiUrl}/property/each/${propertyId}`);
             if (response.status === 200) {
                 setIsValidId(true);
                 setPropertyOwner(response.data.property.userRef);
                 setPropertyData(response?.data?.property);
                 setRemImages(response?.data?.property?.imageUrls?.length - 3);
-                const res = await axios.get(`http://localhost:5000/user/user-data-without-auth?propertyOwner=${response.data.property.userRef}`);
+                const res = await axios.get(`${host.apiUrl}/user/user-data-without-auth?propertyOwner=${response.data.property.userRef}`);
                 setPropertyOwnerData(res.data);
                 setPropertyOwnerEmail(res.data?.email);
             }

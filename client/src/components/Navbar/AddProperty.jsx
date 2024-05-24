@@ -6,7 +6,7 @@ import axios from 'axios'
 import { useParams } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-
+import host from "../../host.js"
 const AddProperty = () => {
     const [sellChecked, setSellChecked] = useState(false);
     const [rentChecked, setRentChecked] = useState(false);
@@ -70,7 +70,7 @@ const AddProperty = () => {
         try {
             if(accessToken){
                 // console.log("inside");
-                responseData = await axios.post(`http://localhost:5000/property/add-property/${userId}`, formData, {
+                responseData = await axios.post(`${host.apiUrl}/property/add-property/${userId}`, formData, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
                         'Refresh-token':refreshToken
@@ -124,7 +124,7 @@ const AddProperty = () => {
             selectedImages.forEach((image) => {
             imageData.append('images', image);
         });
-            const res=await axios.post("http://localhost:5000/property/upload-images",imageData);
+            const res=await axios.post(`${host.apiUrl}/property/upload-images`,imageData);
             const imageUrls=res?.data?.imageUrls;
             setFormData({
                 ...formData,

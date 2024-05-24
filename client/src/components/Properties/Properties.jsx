@@ -6,6 +6,7 @@ import axios from 'axios';
 import { FaChair } from "react-icons/fa6";
 import { SlSizeFullscreen } from "react-icons/sl";
 import Footer from "../Home/Footer"
+import host from "../../host.js"
 
 const Properties =() => {
   const navigate=useNavigate();
@@ -58,7 +59,7 @@ const Properties =() => {
       try{
         const searchQuery=urlParams.toString();
         // console.log(searchQuery);
-        const res=await axios.get(`http://localhost:5000/property?page=${pageNumber}&perPage=${propertiesPerPage}&${searchQuery}`);
+        const res=await axios.get(`${host.apiUrl}/property?page=${pageNumber}&perPage=${propertiesPerPage}&${searchQuery}`);
         if(res.status==200){
           setProperties(res?.data?.properties);
           setTotalPages(Math.ceil(res.data.count / propertiesPerPage));

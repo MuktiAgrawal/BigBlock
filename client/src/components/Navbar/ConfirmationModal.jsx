@@ -3,6 +3,8 @@ import { IoWarning } from "react-icons/io5";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useState,useEffect } from 'react';
+import host from "../../host.js"
+
 const ConfirmationModal = ({propertyId,closeConfirmationModal:closeModal,fetchData}) => {
     const [accessToken, setToken] = useState(() => localStorage.getItem('jwtAccessToken') || "");
     const [refreshToken, setRefToken] = useState(() => localStorage.getItem('jwtRefreshToken') || "");
@@ -10,7 +12,7 @@ const ConfirmationModal = ({propertyId,closeConfirmationModal:closeModal,fetchDa
     const handleDelete=async()=>{
         try{
             if(accessToken){
-                const res=await axios.delete(`http://localhost:5000/property/my-property/deleteProperty/${propertyId}`,{
+                const res=await axios.delete(`${host.apiUrl}/property/my-property/deleteProperty/${propertyId}`,{
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
                         'Refresh-token':refreshToken

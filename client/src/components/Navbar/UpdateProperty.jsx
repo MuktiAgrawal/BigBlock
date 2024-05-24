@@ -5,6 +5,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
+import host from "../../host.js"
 
 const UpdateProperty = () => {
     const [sellChecked, setSellChecked] = useState(false);
@@ -65,7 +66,7 @@ const UpdateProperty = () => {
         // console.log("inside update")
         try {
             if(accessToken){
-                responseData = await axios.post(`http://localhost:5000/property/my-property/updateProperty/${propertyId}`, formData, {
+                responseData = await axios.post(`${host.apiUrl}/property/my-property/updateProperty/${propertyId}`, formData, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
                         'Refresh-token':refreshToken
@@ -160,7 +161,7 @@ const UpdateProperty = () => {
 
     const getPropertyData = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/property/each/${propertyId}`);
+            const response = await axios.get(`${host.apiUrl}/property/each/${propertyId}`);
             if(response.status===200){
                 setFormData(response.data.property);
                 // setSelectedImages(response.data.property.imageUrls)
@@ -194,7 +195,7 @@ const UpdateProperty = () => {
                 imageData.append('images', image);
             });
             setSelectedImages([]);
-            const res=await axios.post("http://localhost:5000/property/upload-images",imageData);
+            const res=await axios.post(`${host.apiUrl}/property/upload-images`,imageData);
             const imageUrls=res?.data?.imageUrls;
             const updatedUrls=[...formData.imageUrls,...imageUrls];
             setFormData({

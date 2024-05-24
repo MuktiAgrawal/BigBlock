@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import { toast } from 'react-toastify';
+import host from "../../host.js"
 
 const Login = ({ switchToSignUp, onClose, setAccessToken, setRefreshToken }) => {
   const [email, setEmail] = useState('');
@@ -41,7 +42,7 @@ const Login = ({ switchToSignUp, onClose, setAccessToken, setRefreshToken }) => 
 
   const sendUserData = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/user/login", { email, password });
+      const response = await axios.post(`${host.apiUrl}/user/login`, { email, password });
       toast(response.data.message, {
         position: "top-right",
         autoClose: 5000,
