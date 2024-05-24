@@ -1,6 +1,4 @@
 import house9 from "../../../assets/landing_image.jpg"
-import { IoMdLocate } from "react-icons/io";
-import MapComponent from './MapComponent';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const Landing = () => {
