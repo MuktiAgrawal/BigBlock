@@ -53,13 +53,13 @@ const LatestProperty = () => {
                                 <LiaBedSolid className='text-[24px]'/>
                                 <p>{property.bedrooms} Bedrooms</p>
                             </div>
-                            <div className='flex flex-col items-start p-2 pl-4 text-[15px]'>
-                                <div className='font-semibold text-[16px] mt-2'>
+                            <div className='flex flex-col items-start p-2 pl-4 pr-4 text-[15px]'>
+                                <div className='flex font-semibold text-[16px] mt-2 justify-between w-full'>
+                                    <p className=''>{property.name}</p>
                                     {property.buy_price?
-                                    <p className='inline'>Rs {property.buy_price}</p>
-                                    : <p className='inline'>Rs {property.rent_price}<span>/month</span></p>
+                                    <p className='text-[var(--color3)]'>Rs {property.buy_price}</p>
+                                    : <p className='text-[var(--color3)]'>Rs {property.rent_price}<span>/month</span></p>
                                     }
-                                    <p className='inline'> - {property.name}</p>
                                 </div>
                                 <p className='mt-2'>{property.address}</p>
                                 {/* <p>

@@ -1,5 +1,5 @@
 import styles from "./styles.module.css"
-import logo from "../../assets/big-block-high-resolution-logo-transparent1.png"
+import logo from "../../assets/dwell-well-high-resolution-logo-transparent light.png"
 import {Link, useResolvedPath, useMatch} from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { useEffect, useState } from "react";

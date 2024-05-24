@@ -18,7 +18,7 @@ const Testimonials = () => {
                     <div className='flex flex-row'>
                         <div className='relative p-10 pt-6 mb-4'>
                             <img src={leftComma} className='h-8 absolute top-0 -left-3'/>
-                            The professionalism and dedication of the team at [Your Real Estate Company] were outstanding. They went above and beyond to ensure we got the best deal possible.
+                            The professionalism and dedication of the team at Dwell Well were outstanding. They went above and beyond to ensure we got the best deal possible.
                             <img src={rightComma} className='h-8 absolute right-0 bottom-5'/>
                         </div>
                     </div>
@@ -34,7 +34,7 @@ const Testimonials = () => {
                     <div className='flex flex-row'>
                         <div className='relative p-10 pt-6 mb-4'>
                             <img src={leftComma} className='h-8 absolute top-0 -left-3'/>
-                            As a first-time homebuyer, I had many questions and concerns. The team at Big Block was incredibly patient and knowledgeable. They made the entire process so easy.
+                            As a first-time homebuyer, I had many questions and concerns. The team at Dwell Well was incredibly patient and knowledgeable. They made the entire process so easy.
                             <img src={rightComma} className='h-8 absolute right-0 bottom-5'/>
                         </div>
                     </div>
@@ -50,7 +50,7 @@ const Testimonials = () => {
                     <div className='flex flex-row'>
                         <div className='relative p-10 pt-6 mb-4'>
                             <img src={leftComma} className='h-8 absolute top-0 -left-3'/>
-                            Working with Big Block was a fantastic experience. They helped us find our dream home in no time. The process was smooth and stress-free. Highly recommend!
+                            Working with Dwell Well was a fantastic experience. They helped us find our dream home in no time. The process was smooth and stress-free. Highly recommend!
                             <img src={rightComma} className='h-8 absolute right-0 bottom-5'/>
                         </div>
                     </div>

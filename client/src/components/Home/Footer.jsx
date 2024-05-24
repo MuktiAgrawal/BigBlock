@@ -1,6 +1,6 @@
 import React from 'react'
 import footerBackground from "../../assets/footer_background2.jpg"
-import logo from "../../assets/big-block-high-resolution-logo-transparent1.png"
+import logo from "../../assets/dwell-well-high-resolution-logo-transparent light.png"
 import instagram from "../../assets/instagram.png"
 import facebook from "../../assets/facebook.png"
 import linkedin from "../../assets/linkedin.png"
@@ -42,8 +42,8 @@ const Footer = () => {
         <div className='text-[14px]'>
             <div className='bg-[var(--color5)] h-[60vh] bg-contain pb-10 pr-0 pl-16 pt-28 flex flex-row' style={backgroundStyle}>
                 <div className='flex-[1.5] pr-20' >
-                    <img src={logo} className='h-12 w-16 mt-8'/>
-                    <p className='text-[var(--color10)]  pt-6'>Find more than a house. Discover your perfect home with Big Block - your partner in real estate.</p>
+                    <img src={logo} className='h-10 w-[88px] mt-8'/>
+                    <p className='text-[var(--color10)]  pt-6'>Find more than a house. Discover your perfect home with Dwell Well - your partner in real estate.</p>
                 </div>
                 <div className='flex flex-col flex-1 text-[var(--color10)] '>
                     <a className='p-2 cursor-pointer hover:text-[var(--color2)] active:text-[var(--color2)]' onClick={() => scrollToSection("about")}>About us</a>
@@ -77,7 +77,7 @@ const Footer = () => {
                 </div>
             </div>
             <div className='h-[8vh] bg-[var(--color5)] items-center flex justify-center'>
-                <p className='text-[var(--color10)]'>&#169; Copyright BigBlock 2024, All Rights Reserved</p>
+                <p className='text-[var(--color10)]'>&#169; Copyright DwellWell 2024, All Rights Reserved</p>
             </div>
         </div>
     )
